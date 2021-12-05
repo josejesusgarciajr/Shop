@@ -16,20 +16,20 @@ namespace Shop.Controllers
         /*
          * List of Companies
          */
-        public List<Company> Companies = new List<Company>();
+        public static List<Company> Companies { get; set; }
 
         /*
          * Vaness's Company
          */
         public static Company Vanessa { get; set; }
-        private static List<Product> VanessaProducts { get; set; }
+        private static List<Product> VanessaProducts = new List<Product>();
 
         /*
          * Jose's Company
          */
         public static Company Jose { get; set; }
-        private static List<Product> JoseProducts { get; set; }
- 
+        private static List<Product> JoseProducts = new List<Product>();
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -37,6 +37,18 @@ namespace Shop.Controllers
 
         public IActionResult Index()
         {
+            Companies = new List<Company>();
+            Image v1 = new Image(0, "/images/Vanessa/ProductThumbnails/dancing.webp");
+            VanessaProducts.Add(new Product(0, 0, "Dancing", 15.99, "Feel Alive", v1, null, false, 0.00, false)); ;
+            VanessaProducts.Add(new Product(0, 0, "Dancing", 15.99, "Feel Alive", v1, null, false, 0.00, false)); ;
+            VanessaProducts.Add(new Product(0, 0, "Dancing", 15.99, "Feel Alive", v1, null, false, 0.00, false)); ;
+            VanessaProducts.Add(new Product(0, 0, "Dancing", 15.99, "Feel Alive", v1, null, false, 0.00, false)); ;
+            VanessaProducts.Add(new Product(0, 0, "Dancing", 15.99, "Feel Alive", v1, null, false, 0.00, false)); ;
+            VanessaProducts.Add(new Product(0, 0, "Dancing", 15.99, "Feel Alive", v1, null, false, 0.00, false)); ;
+            VanessaProducts.Add(new Product(0, 0, "Dancing", 15.99, "Feel Alive", v1, null, false, 0.00, false)); ;
+            VanessaProducts.Add(new Product(0, 0, "Dancing", 15.99, "Feel Alive", v1, null, false, 0.00, false)); ;
+
+
             Vanessa = new Company(0, "Vanessa", "DisneyWorld, Orlando Florida", VanessaProducts,
                 "https://www.google.com/maps/dir//Walt+Disney+World®+Resort,+Orlando,+FL/@28.3771857,-81.5729287,17z/data=!4m9!4m8!1m0!1m5!1m1!1s0x88dd7ee634caa5f7:0xa71e391fd01cf1a0!2m2!1d-81.57074!2d28.3771857!3e0",
                 "To make the world a better place!");
@@ -57,8 +69,16 @@ namespace Shop.Controllers
             /*
              * Find CompanyID
              */
+            Company company = new Company();
+            foreach(Company c in Companies)
+            {
+                if(c.ID == companyID)
+                {
+                    company = c;
+                }
+            }
 
-            return View();
+            return View(company);
         }
 
         public IActionResult Privacy()

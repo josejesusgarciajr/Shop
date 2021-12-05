@@ -12,5 +12,11 @@ namespace Shop.Models
 
         public Image() {}
 
+        public Image(int id, string imagePath)
+        {
+            ID = id;
+            ImagePath = imagePath;
+        }
+
     }
 }

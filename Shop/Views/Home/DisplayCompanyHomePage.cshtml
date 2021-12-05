@@ -1,0 +1,36 @@
+﻿@model Company;
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Name</h1>
+</div>
+
+<!-- Display Products -->
+<div class="row">
+    @foreach (Product product in Model.Products)
+    {
+        
+        <div class="col-3">
+            <a asp-controller="Home" asp-action="DisplayProduct">
+                @product.Name<br />
+                <img src="@product.ThumbnailImage.ImagePath"
+                         width="185" height="300"/>
+            </a>
+        </div>
+    }
+</div>
+
+
+<!-- Mission Statement-->
+<div class="container">
+
+    <label>Mission Statement:</label>
+    <p class="lead">@Model.MissionStatment</p>
+
+    <a href="@Model.HrefAddress" target="_blank">
+        <address>@Model.Address</address>
+    </a>
+
+</div>

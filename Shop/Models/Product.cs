@@ -31,8 +31,21 @@ namespace Shop.Models
          */
         public bool Flag { get; set; }
 
-        public Product()
+        public Product() { }
+
+        public Product(int id, int referenceID, string name, double price, string desription,
+            Image thumbnailImage, List<Image> imageCarousel, bool discountBool, double discount, bool flag)
         {
+            ID = id;
+            ReferenceID = referenceID;
+            Name = name;
+            Price = price;
+            Description = desription;
+            ThumbnailImage = thumbnailImage;
+            ImageCarousel = imageCarousel;
+            DiscountBool = discountBool;
+            Discount = discount;
+            Flag = flag;
         }
     }
 }
