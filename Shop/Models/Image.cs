@@ -7,6 +7,9 @@ namespace Shop.Models
     {
 
         public int ID { get; set; }
+        public int CompanyID { get; set; }
+        public int ProductID { get; set; }
+        public bool Thumbnail { get; set; }
         public string ImagePath { get; set; }
         public IFormFile ImageFormFile { get; set; }
 

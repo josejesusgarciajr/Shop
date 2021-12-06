@@ -8,5 +8,9 @@
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Images\Vanessa\" />
     <Folder Include="wwwroot\Images\Vanessa\ProductThumbnails\" />
+    <Folder Include="Views\Admin\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 </Project>
