@@ -19,7 +19,10 @@ namespace Shop.Controllers
 
         public IActionResult AddProductView()
         {
-            return View();
+            QueryDB queryDB = new QueryDB();
+            //List<Company> companies = queryDB.GetEveryCompaniesBasicInfo();
+            List<Company> companies = HomeController.Companies;
+            return View(companies);
         }
 
         public IActionResult AddProductToDB(Product product)

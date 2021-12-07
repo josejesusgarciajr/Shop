@@ -1,0 +1,25 @@
+﻿
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add Product</h1>
+</div>
+
+<div class="container">
+
+    <form asp-controller="Admin" asp-action="AddProductToDB">
+
+        <select class="form-select" aria-label="Default select example">
+            @foreach (Company company in Model)
+            {
+                <option value="@company.ID">@company.Name</option>
+            }
+        </select>
+
+    </form>
+
+
+</div>

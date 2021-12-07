@@ -218,5 +218,74 @@ namespace Shop.Models
 
             return company;
         }
+
+        public Company GetCompanyBasicInfo(int id)
+        {
+            Company company = new Company();
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "SELECT * FROM Company"
+                    + $" WHERE ID = {id};";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open sql connection
+                sqlConnection.Open();
+
+                // get basic companies information
+                using(SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        company.ID = (int)reader[0];
+                        company.Name = (string)reader[1];
+                        company.Address = (string)reader[2];
+                        company.HrefAddress = (string)reader[3];
+                        company.MissionStatment = (string)reader[4];
+                    }
+                }
+
+                // close sql connection
+                sqlConnection.Close();
+            }
+
+            return company;
+        }
+
+        public List<Company> GetEveryCompaniesBasicInfo()
+        {
+            List<Company> companies = new List<Company>();
+            // establish sql connection
+            using (SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "SELECT * FROM Company";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open sql connection
+                sqlConnection.Open();
+
+                // get basic companies information
+                using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Company company = new Company();
+                        company.ID = (int)reader[0];
+                        company.Name = (string)reader[1];
+                        company.Address = (string)reader[2];
+                        company.HrefAddress = (string)reader[3];
+                        company.MissionStatment = (string)reader[4];
+                        companies.Add(company);
+                    }
+                }
+
+                // close sql connection
+                sqlConnection.Close();
+            }
+
+            return companies;
+        }
     }
 }
