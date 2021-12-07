@@ -24,7 +24,7 @@ namespace Shop.Models
          * Discount Information
          */
         public bool DiscountBool { get; set; }
-        public double Discount { get; set; }
+        public double DiscountPercentage { get; set; }
 
         /*
          * Switch to Flag a Product
@@ -44,7 +44,7 @@ namespace Shop.Models
             ThumbnailImage = thumbnailImage;
             ImageCarousel = imageCarousel;
             DiscountBool = discountBool;
-            Discount = discount;
+            DiscountPercentage = discount;
             Flag = flag;
         }
     }
