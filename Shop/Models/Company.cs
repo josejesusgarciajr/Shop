@@ -25,14 +25,14 @@ namespace Shop.Models
 
         public Company() { }
 
-        public Company(int id, string name, string address, List<Product> products, string href,
+        public Company(int id, string name, string address, string hrefAddress, List<Product> products,
             string missionStatment)
         {
             ID = id;
             Name = name;
             Address = address;
+            HrefAddress = hrefAddress;
             Products = products;
-            HrefAddress = href;
             MissionStatment = missionStatment;
         }
     }

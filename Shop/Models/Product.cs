@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace Shop.Models
 {
@@ -19,6 +20,7 @@ namespace Shop.Models
          */
         public Image ThumbnailImage { get; set; }
         public List<Image> ImageCarousel { get; set; }
+        public List<IFormFile> UploadImageCarousel { get; set; }
 
         /*
          * Discount Information

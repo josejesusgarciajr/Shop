@@ -6,7 +6,7 @@ namespace Shop.Models
 {
     public class QueryDB
     {
-        private string CS = "";
+        private string CS = "Server=localhost;Database=Arizona;User Id=sa;Password=myPassw0rd;";
         public QueryDB()
         {
         }
@@ -24,8 +24,8 @@ namespace Shop.Models
             using (SqlConnection sqlConnection = new SqlConnection(CS))
             {
                 // query
-                string query = "SELECT ImageID, ImagePath FROM Image"
-                    + $" WHERE ProductID = {productID} && ThumbnailBool = {1};";
+                string query = "SELECT ID, ImagePath FROM Image"
+                        + $" WHERE ProductID = {productID} AND Thumbnail = {1}; ";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
                 // open sql connection
@@ -86,7 +86,7 @@ namespace Shop.Models
             using(SqlConnection sqlConnection = new SqlConnection(CS))
             {
                 // string query
-                string query = "SELECT ID, ThumbnailBool From Image"
+                string query = "SELECT ID, Thumbnail From Image"
                     + $" WHERE ProductID = {productID};";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
@@ -159,7 +159,7 @@ namespace Shop.Models
             using(SqlConnection sqlConnection = new SqlConnection(CS))
             {
                 // query
-                string query = "SELECT ProductID FROM Products"
+                string query = "SELECT * FROM Product"
                     + $" WHERE CompanyID = {companyID};";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
@@ -208,7 +208,7 @@ namespace Shop.Models
                     {
                         
                         company = new Company(companyID, (string) reader[1], (string) reader[2],
-                            products, (string) reader[3], (string) reader[4]);
+                            (string)reader[3], products, (string) reader[4]);
                     }
                 }
 
@@ -253,7 +253,7 @@ namespace Shop.Models
             return company;
         }
 
-        public List<Company> GetEveryCompaniesBasicInfo()
+        public List<Company> GetCompanies()
         {
             List<Company> companies = new List<Company>();
             // establish sql connection
@@ -271,7 +271,11 @@ namespace Shop.Models
                 {
                     while (reader.Read())
                     {
-                        Company company = new Company();
+                        int companyID = (int)reader[0];
+                        List<Product> products = GetProductsFromCompany(companyID);
+
+                        Company company = new Company(companyID, (string)reader[1],
+                            (string)reader[2], (string)reader[3], products, (string)reader[4]);
                         company.ID = (int)reader[0];
                         company.Name = (string)reader[1];
                         company.Address = (string)reader[2];

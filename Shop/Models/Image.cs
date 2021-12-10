@@ -5,7 +5,6 @@ namespace Shop.Models
 {
     public class Image
     {
-
         public int ID { get; set; }
         public int CompanyID { get; set; }
         public int ProductID { get; set; }

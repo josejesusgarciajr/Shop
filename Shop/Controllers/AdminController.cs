@@ -21,8 +21,9 @@ namespace Shop.Controllers
         {
             QueryDB queryDB = new QueryDB();
             //List<Company> companies = queryDB.GetEveryCompaniesBasicInfo();
-            List<Company> companies = HomeController.Companies;
-            return View(companies);
+            //List<Company> companies = HomeController.Companies;
+            ViewBag.Companies = HomeController.Companies;
+            return View();
         }
 
         public IActionResult AddProductToDB(Product product)
