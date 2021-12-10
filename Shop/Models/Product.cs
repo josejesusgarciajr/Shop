@@ -19,6 +19,7 @@ namespace Shop.Models
          * Images Information
          */
         public Image ThumbnailImage { get; set; }
+        public IFormFile UploadThumbnail { get; set; }
         public List<Image> ImageCarousel { get; set; }
         public List<IFormFile> UploadImageCarousel { get; set; }
 

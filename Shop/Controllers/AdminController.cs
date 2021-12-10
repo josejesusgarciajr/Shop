@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Models;
 
@@ -11,6 +12,13 @@ namespace Shop.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly IWebHostEnvironment WebHostEnvironment;
+
+        public AdminController(IWebHostEnvironment e)
+        {
+            WebHostEnvironment = e;
+        }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
@@ -20,22 +28,21 @@ namespace Shop.Controllers
         public IActionResult AddProductView()
         {
             QueryDB queryDB = new QueryDB();
-            //List<Company> companies = queryDB.GetEveryCompaniesBasicInfo();
-            //List<Company> companies = HomeController.Companies;
-            ViewBag.Companies = HomeController.Companies;
+            ViewBag.Companies = queryDB.GetCompanies();
+
             return View();
         }
 
         public IActionResult AddProductToDB(Product product)
         {
-            QueryDB queryDB = new QueryDB();
+            QueryDB queryDB = new QueryDB(WebHostEnvironment);
 
             // add company to DB
             queryDB.AddProduct(product);
-
+            product.ID = queryDB.GetLastProductID();
             // dispaly company information
-            Company company = queryDB.GetCompany(product.ReferenceID);
-            return RedirectToAction("ViewCompanyInformation", company);
+            //Company company = queryDB.GetCompany(product.ReferenceID);
+            return RedirectToAction("DisplayCompanyHomePage", "Home", product.ReferenceID);
         }
     }
 }

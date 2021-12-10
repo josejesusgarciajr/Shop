@@ -10,7 +10,7 @@
 
 <div class="container">
 
-    <form asp-controller="Admin" asp-action="AddProductToDB">
+    <form asp-controller="Admin" asp-action="AddProductToDB" EncType="multipart/form-data">
 
         <!-- company id -->
         <select class="form-select" aria-label="Default select example"
@@ -51,7 +51,7 @@
         <!-- product thumbnail -->
         <div class="custom-file">
             <input type="file" class="custom-file-input" id="customFile"
-                   asp-for="ThumbnailImage.ImageFormFile">
+                   asp-for="UploadThumbnail">
             <label class="custom-file-label" for="customFile">Choose Thumbnail for Product</label>
         </div>
 

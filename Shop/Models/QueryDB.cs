@@ -1,19 +1,155 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace Shop.Models
 {
     public class QueryDB
     {
         private string CS = "Server=localhost;Database=Arizona;User Id=sa;Password=myPassw0rd;";
+        private IWebHostEnvironment WebHostEnvironment { get; set; }
         public QueryDB()
         {
         }
 
+        public QueryDB(IWebHostEnvironment e)
+        {
+            WebHostEnvironment = e;
+        }
+
+        public string GetCompanyName(int companyID)
+        {
+            string companyName = "";
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "SELECT Name FROM Company;";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open sql connection
+                sqlConnection.Open();
+
+                companyName += sqlCommand.ExecuteScalar();
+
+                // close sql connection
+                sqlConnection.Close();
+            }
+
+            return companyName;
+        }
+
         public void AddProduct(Product product)
         {
+            // Insert Product Info to Database
+            using (SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                int discountBool = -1;
+                if(product.DiscountBool == false)
+                {
+                    discountBool = 0;
+                } else
+                {
+                    discountBool = 1;
+                }
 
+                int flag = -1;
+                if(product.Flag == false)
+                {
+                    flag = 0;
+                } else
+                {
+                    flag = 1;
+                }
+                // query
+                string query = "INSERT INTO Product(CompanyID, Name, Price, Description,"
+                    + " DiscountBool, DiscountPercentage, Flag)"
+                    + $" VALUES({product.ReferenceID}, '{product.Name}', {product.Price}, '{product.Description}',"
+                    + $" {discountBool}, {product.DiscountPercentage}, {flag}); ";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                //Console.WriteLine($"Add Product Query: {query}");
+                // open sql connection
+                sqlConnection.Open();
+
+                sqlCommand.ExecuteNonQuery();
+
+                // close sql connection
+                sqlConnection.Close();
+            }
+
+            // set product id
+            product.ID = GetLastProductID();
+
+            // Add Product Images to DB
+            AddProductImages(product);
+
+            // Insert Product Images to Folders
+            FolderAndDirectory folderAndDirectory = new FolderAndDirectory(WebHostEnvironment);
+            folderAndDirectory.InsertThumbnailImageToFolder(product);
+            folderAndDirectory.InsertCarouselImagesToFolder(product);
+
+        }
+
+        public int GetLastProductID()
+        {
+            int id = -1;
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "SELECT TOP 1 ID FROM Product ORDER BY ID DESC;";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open sql connection
+                sqlConnection.Open();
+
+                id = (int)sqlCommand.ExecuteScalar();
+
+                // close sql connection
+                sqlConnection.Close();
+            }
+
+            return id;
+        }
+
+        private void AddProductImages(Product product)
+        {
+            // insert product images to database
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // open sql connection
+                sqlConnection.Open();
+
+                // get compnay name
+                string companyName = GetCompanyName(product.ReferenceID);
+
+                /*
+                 * THUMBNAIL IMAGE
+                 */
+                string query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
+                        + $" VALUES({product.ReferenceID}, {product.ID}, {1}, '/images/{companyName}/ProductThumbnails/{product.UploadThumbnail.FileName}');";
+                //Console.WriteLine($"Thumbnail Image Query: {query}");
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.ExecuteNonQuery();
+
+                /*
+                 * CAROUSEL IMAGES
+                 */
+                foreach (IFormFile imageFile in product.UploadImageCarousel)
+                {
+                    // query
+                    query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
+                        + $" VALUES({product.ReferenceID}, {product.ID}, {0}, '/images/{companyName}/CarouselImages/{imageFile.FileName}');";
+                    sqlCommand = new SqlCommand(query, sqlConnection);
+                    //Console.WriteLine($"CAROUSEL QUERY: {query}");
+                    sqlCommand.ExecuteNonQuery();
+                }
+
+                // close sql connection
+                sqlConnection.Close();
+            }
         }
 
         public Image GetThumbnailImage(int productID)
@@ -88,6 +224,7 @@ namespace Shop.Models
                 // string query
                 string query = "SELECT ID, Thumbnail From Image"
                     + $" WHERE ProductID = {productID};";
+                Console.WriteLine($"Query for Carousel: {query}");
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
                 // open sql connection
@@ -129,7 +266,7 @@ namespace Shop.Models
 
                 Image thumbnail = GetThumbnailImage(productID);
                 List<Image> carousel = GetCarouselImagesFromProduct(productID);
-
+                Console.WriteLine($"C: {carousel.Count}");
                 // open sql connection
                 sqlConnection.Open();
 

@@ -84,6 +84,15 @@ namespace Shop.Controllers
             return View(company);
         }
 
+        public IActionResult DisplayProductView(int productID)
+        {
+            // get product
+            QueryDB queryDB = new QueryDB();
+            Product product = queryDB.GetProduct(productID);
+            Console.WriteLine($"Image Carousel Count: {product.ImageCarousel.Count}");
+            return View(product);
+        }
+
         public IActionResult Privacy()
         {
             return View();
