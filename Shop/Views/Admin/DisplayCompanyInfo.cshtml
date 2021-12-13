@@ -1,0 +1,38 @@
+﻿@model Company;
+@{
+    ViewData["Title"] = "Administer Company";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Name</h1>
+</div>
+
+<!-- table -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Product Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Description</th>
+            <th scope="col">Management</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach(Product product in Model.Products)
+        {
+            <tr>
+                <th scope="row">@product.Name</th>
+                <td>@product.Price</td>
+                <td>@product.Description</td>
+                <td>
+                    <a class="btn btn-danger"
+                       asp-controller="Admin" asp-action="DeleteProduct" asp-route-productID="@product.ID">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+        
+    </tbody>
+</table>

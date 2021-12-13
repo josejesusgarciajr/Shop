@@ -9,10 +9,21 @@
 
 <!-- buttons -->
 <div class="container">
+    <div class="row">
+        @foreach(Company company in ViewBag.Companies)
+        {
+            <a class="btn btn-success"
+               asp-controller="Admin" asp-action="DisplayCompanyInfo" asp-route-companyID="@company.ID">
+                @company.Name
+            </a>
+        }
+    </div>
+    <div class="row">
 
-    <a asp-controller="Admin" asp-action="AddCompanyView"
-       class="btn btn-primary">Add Company</a>
+        <a asp-controller="Admin" asp-action="AddCompanyView"
+           class="btn btn-primary">Add Company</a>
 
-    <a asp-controller="Admin" asp-action="AddProductView"
-       class="btn btn-primary">Add Product</a>
+        <a asp-controller="Admin" asp-action="AddProductView"
+           class="btn btn-primary">Add Product</a>
+    </div>
 </div>

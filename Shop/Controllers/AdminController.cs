@@ -13,7 +13,7 @@ namespace Shop.Controllers
     public class AdminController : Controller
     {
         private readonly IWebHostEnvironment WebHostEnvironment;
-
+        private static int CompanyID = -1;
         public AdminController(IWebHostEnvironment e)
         {
             WebHostEnvironment = e;
@@ -22,7 +22,23 @@ namespace Shop.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            QueryDB queryDB = new QueryDB();
+            ViewBag.Companies = queryDB.GetCompanies();
             return View();
+        }
+
+        public IActionResult DisplayCompanyInfo(int companyID)
+        {
+            QueryDB queryDB = new QueryDB();
+            Company company = queryDB.GetCompany(companyID);
+            CompanyID = companyID;
+
+            return View(company);
+        }
+
+        public IActionResult DeleteProduct(int productID)
+        {
+            return RedirectToAction("DisplayCompanyInfo", new { companyID = CompanyID });
         }
 
         public IActionResult AddCompanyView()
@@ -48,11 +64,12 @@ namespace Shop.Controllers
 
         public IActionResult AddProductToDB(Product product)
         {
+            Console.WriteLine($"Name of product: {product.Name}");
             // add company to DB
             QueryDB queryDB = new QueryDB(WebHostEnvironment);
             queryDB.AddProduct(product);
 
-            return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyIDs = product.ReferenceID });
+            return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyID = product.ReferenceID });
         }
     }
 }

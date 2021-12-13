@@ -19,6 +19,26 @@ namespace Shop.Models
             WebHostEnvironment = e;
         }
 
+        public void DeleteProduct(int productID)
+        {
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open sql connection
+                sqlConnection.Open();
+
+                // delete product from database
+                sqlCommand.ExecuteNonQuery();
+
+                // close sql connectino
+                sqlConnection.Close();
+            }
+        }
+
         public void AddCompany(Company company)
         {
             // establish sq connection
@@ -246,7 +266,7 @@ namespace Shop.Models
                 // string query
                 string query = "SELECT ID, Thumbnail From Image"
                     + $" WHERE ProductID = {productID};";
-                Console.WriteLine($"Query for Carousel: {query}");
+      
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
                 // open sql connection
@@ -288,7 +308,7 @@ namespace Shop.Models
 
                 Image thumbnail = GetThumbnailImage(productID);
                 List<Image> carousel = GetCarouselImagesFromProduct(productID);
-                Console.WriteLine($"C: {carousel.Count}");
+
                 // open sql connection
                 sqlConnection.Open();
 

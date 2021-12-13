@@ -1,5 +1,6 @@
 ﻿
-@model Product
+@model Product;
+
 @{
     ViewData["Title"] = "Add Product";
 }
@@ -24,17 +25,17 @@
         <!-- name of product -->
         <label class="lead">Name: </label>
         <input type="text" placeholder="Dancing" class="form-control"
-               asp-for="Name" />
+               asp-for="Name" required/>
 
         <!-- price of product -->
         <label class="lead">Price: </label>
         <input type="number" step="0.01" placeholder="0.00" class="form-control"
-               asp-for="Price" />
+               asp-for="Price" required/>
 
         <!-- description of product -->
         <label class="lead">Description: </label>
         <input type="text" placeholder="Express yourself! Feel the beat! Feel the music! Feel Alive!" class="form-control"
-               asp-for="Description" /> <br />
+               asp-for="Description" required/> <br />
 
         <!-- discount switch -->
         <div class="form-check form-switch container">
@@ -51,7 +52,7 @@
         <!-- product thumbnail -->
         <div class="custom-file">
             <input type="file" class="custom-file-input" id="customFile"
-                   asp-for="UploadThumbnail">
+                   asp-for="UploadThumbnail" required>
             <label class="custom-file-label" for="customFile">Choose Thumbnail for Product</label>
         </div>
 
@@ -59,7 +60,7 @@
         <div class="mb-3">
             <label for="formFileMultiple" class="form-label">Select Multiple Image for Carousel</label>
             <input class="form-control" type="file" id="formFileMultiple" multiple
-                   asp-for="UploadImageCarousel">
+                   asp-for="UploadImageCarousel" required>
         </div>
 
         <!-- flag product -->
@@ -72,6 +73,5 @@
         <input type="submit" class="btn btn-success" />
 
     </form>
-
 
 </div>
