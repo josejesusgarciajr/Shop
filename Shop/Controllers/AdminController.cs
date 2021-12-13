@@ -25,6 +25,19 @@ namespace Shop.Controllers
             return View();
         }
 
+        public IActionResult AddCompanyView()
+        {
+            return View();
+        }
+
+        public IActionResult AddCompanyToDB(Company company)
+        {
+            QueryDB queryDB = new QueryDB();
+            queryDB.AddCompany(company);
+
+            return RedirectToAction("Index", "Home");
+        }
+
         public IActionResult AddProductView()
         {
             QueryDB queryDB = new QueryDB();
@@ -35,14 +48,11 @@ namespace Shop.Controllers
 
         public IActionResult AddProductToDB(Product product)
         {
-            QueryDB queryDB = new QueryDB(WebHostEnvironment);
-
             // add company to DB
+            QueryDB queryDB = new QueryDB(WebHostEnvironment);
             queryDB.AddProduct(product);
-            product.ID = queryDB.GetLastProductID();
-            // dispaly company information
-            //Company company = queryDB.GetCompany(product.ReferenceID);
-            return RedirectToAction("DisplayCompanyHomePage", "Home", product.ReferenceID);
+
+            return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyIDs = product.ReferenceID });
         }
     }
 }

@@ -19,6 +19,28 @@ namespace Shop.Models
             WebHostEnvironment = e;
         }
 
+        public void AddCompany(Company company)
+        {
+            // establish sq connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "INSERT INTO Company"
+                    + $" VALUES ('{company.Name}', '{company.Address}',"
+                    + $" '{company.HrefAddress}', '{company.MissionStatment}');";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open sql connection
+                sqlConnection.Open();
+
+                // add company to database
+                sqlCommand.ExecuteNonQuery();
+
+                // close sql connection
+                sqlConnection.Close();
+            }
+        }
+
         public string GetCompanyName(int companyID)
         {
             string companyName = "";

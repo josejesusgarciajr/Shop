@@ -1,0 +1,38 @@
+﻿@model Company;
+@{
+    ViewData["Title"] = "Add Company";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Add Company</h1>
+</div>
+
+<div class="container">
+
+    <form asp-controller="Admin" asp-action="AddCompanyToDB">
+        <!-- Name -->
+        <label>Name:</label>
+        <input type="text" class="form-control"
+               asp-for="Name"/>
+
+        <!-- Address -->
+        <label>Address:</label>
+        <input type="text" class="form-control"
+               asp-for="Address" />
+
+        <!-- HrefAddress -->
+        <label>HrefAddress:</label>
+        <input type="text" class="form-control"
+               asp-for="HrefAddress" />
+
+        <!-- Mission Statement -->
+        <label>Mission Statement:</label>
+        <input type="text" class="form-control"
+               asp-for="MissionStatment" /> <br />
+
+        <!-- SUBMIT BUTTION -->
+        <input type="submit" class="btn btn-primary"
+               value="Add Company" />
+    </form>
+
+</div>
