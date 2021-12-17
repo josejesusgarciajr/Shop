@@ -26,6 +26,10 @@
                 <td>@product.Price</td>
                 <td>@product.Description</td>
                 <td>
+                    <a class="btn btn-info"
+                       asp-controller="Admin" asp-action="EditProductView" asp-route-productID="@product.ID">
+                        Edit
+                    </a>
                     <a class="btn btn-danger"
                        asp-controller="Admin" asp-action="DeleteProductFromDB" asp-route-productID="@product.ID">
                         Delete
