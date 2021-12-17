@@ -19,13 +19,41 @@ namespace Shop.Models
             WebHostEnvironment = e;
         }
 
-        public void DeleteProduct(int productID)
+        private void DeleteProductCarouselImages(int productID)
         {
             // establish sql connection
             using(SqlConnection sqlConnection = new SqlConnection(CS))
             {
                 // query
-                string query = "";
+                string query = "DELETE FROM Image"
+                    + $" WHERE ProductID = {productID};";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open sql connection
+                sqlConnection.Open();
+
+                // delete carousel
+                sqlCommand.ExecuteNonQuery();
+
+                // close sql connection
+                sqlConnection.Close();
+            }
+        }
+
+        public void DeleteProduct(int productID)
+        {
+            /*
+             * first delete the product carousel images
+             * since they depend on product
+             */
+            DeleteProductCarouselImages(productID);
+
+            // establish sql connection
+            using (SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "DELETE FROM Product"
+                    + $" WHERE ID = {productID};";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
                 // open sql connection

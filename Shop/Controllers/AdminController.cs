@@ -36,8 +36,11 @@ namespace Shop.Controllers
             return View(company);
         }
 
-        public IActionResult DeleteProduct(int productID)
+        public IActionResult DeleteProductFromDB(int productID)
         {
+            QueryDB queryDB = new QueryDB();
+            queryDB.DeleteProduct(productID);
+
             return RedirectToAction("DisplayCompanyInfo", new { companyID = CompanyID });
         }
 

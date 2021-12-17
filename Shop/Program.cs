@@ -17,10 +17,27 @@ namespace Shop
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
+            //Host.CreateDefaultBuilder(args)
+            //    .ConfigureWebHostDefaults(webBuilder =>
+            //    {
+            //        webBuilder.UseStartup<Startup>();
+            //    });
+
+            /*
+             * Test to see if this allows 
+             * large amounts of data to pass
+             * from Razor Form -> Controller
+             * 
+             * When MaxRequestBodySize is set to null,
+             *  the maximum request body size is unlimited.
+             *  
+             *  https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.kestrelserverlimits.maxrequestbodysize?view=aspnetcore-6.0
+             */
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseKestrel(options => { options.Limits.MaxRequestBodySize = null; })
+                    .UseStartup<Startup>();
                 });
     }
 }

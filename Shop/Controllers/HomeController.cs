@@ -14,11 +14,6 @@ namespace Shop.Controllers
         private readonly ILogger<HomeController> _logger;
 
         /*
-         * List of Companies
-         */
-        public static List<Company> Companies { get; set; }
-
-        /*
          * Vaness's Company
          */
         public static Company Vanessa { get; set; }
@@ -37,10 +32,8 @@ namespace Shop.Controllers
 
         public IActionResult Index()
         {
-            Companies = new List<Company>();
-
             QueryDB queryDB = new QueryDB();
-            Companies = queryDB.GetCompanies();
+            List<Company> Companies = queryDB.GetCompanies();
 
             return View(Companies);
         }
@@ -51,14 +44,8 @@ namespace Shop.Controllers
             /*
              * Find CompanyID
              */
-            Company company = new Company();
-            foreach(Company c in Companies)
-            {
-                if(c.ID == companyID)
-                {
-                    company = c;
-                }
-            }
+            QueryDB queryDB = new QueryDB();
+            Company company = queryDB.GetCompany(companyID);
 
             return View(company);
         }
