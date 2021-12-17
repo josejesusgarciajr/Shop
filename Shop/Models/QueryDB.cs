@@ -96,7 +96,8 @@ namespace Shop.Models
             using(SqlConnection sqlConnection = new SqlConnection(CS))
             {
                 // query
-                string query = "SELECT Name FROM Company;";
+                string query = "SELECT Name FROM Company" +
+                    $" WHERE ID = {companyID};";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
                 // open sql connection
