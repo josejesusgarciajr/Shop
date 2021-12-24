@@ -67,12 +67,29 @@ namespace Shop.Controllers
 
         public IActionResult AddProductToDB(Product product)
         {
-            Console.WriteLine($"Name of product: {product.Name}");
             // add company to DB
             QueryDB queryDB = new QueryDB(WebHostEnvironment);
             queryDB.AddProduct(product);
 
             return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyID = product.ReferenceID });
+        }
+
+        public IActionResult EditProductView(int productID)
+        {
+            QueryDB queryDB = new QueryDB();
+            Product product = queryDB.GetProduct(productID);
+
+
+            return View(product);
+        }
+
+        public IActionResult EditProductInDB(Product product)
+        {
+            Console.WriteLine($"Product Name: {product.Name}");
+            QueryDB queryDB = new QueryDB();
+            queryDB.EditProduct(product);
+
+            return RedirectToAction("DisplayCompanyInfo", new { companyID = product.ReferenceID});
         }
     }
 }

@@ -19,6 +19,50 @@ namespace Shop.Models
             WebHostEnvironment = e;
         }
 
+        public void EditProduct(Product product)
+        {
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                int discountBool = -1;
+                if (product.DiscountBool == false)
+                {
+                    discountBool = 0;
+                }
+                else
+                {
+                    discountBool = 1;
+                }
+
+                int flag = -1;
+                if (product.Flag == false)
+                {
+                    flag = 0;
+                }
+                else
+                {
+                    flag = 1;
+                }
+                // query
+                string query = "UPDATE Product" 
+                    + $" SET Name = '{product.Name}', Price = {product.Price}, " 
+                    + $"[Description] = '{product.Description}', DiscountBool = {discountBool},"
+                    + $" DiscountPercentage = {product.DiscountPercentage}, Flag = {flag}"
+                    + $" WHERE ID = {product.ID};";
+                Console.WriteLine($"Edit Query: {query}");
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open sql connection
+                sqlConnection.Open();
+
+                // edit product in database
+                sqlCommand.ExecuteNonQuery();
+
+                // close sql connection
+                sqlConnection.Close();
+            }
+        }
+
         private void DeleteProductCarouselImages(int productID)
         {
             // establish sql connection
@@ -138,7 +182,7 @@ namespace Shop.Models
                 string query = "INSERT INTO Product(CompanyID, Name, Price, Description,"
                     + " DiscountBool, DiscountPercentage, Flag)"
                     + $" VALUES({product.ReferenceID}, '{product.Name}', {product.Price}, '{product.Description}',"
-                    + $" {discountBool}, {product.DiscountPercentage}, {flag}); ";
+                    + $" {discountBool}, {product.DiscountPercentage}, {flag});";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 //Console.WriteLine($"Add Product Query: {query}");
                 // open sql connection
