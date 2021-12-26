@@ -66,8 +66,12 @@ namespace Shop.Models
             string companyName = queryDB.GetCompanyName(product.ReferenceID);
 
             string dir = WebHostingEnvironment.WebRootPath + $"/Images/{companyName}/CarouselImages";
-            string path = WebHostingEnvironment.WebRootPath
-                + $"/Images/{companyName}/CarouselImages/{product.UploadImageCarousel[0].FileName}";
+            string path = "";
+            if (product.UploadImageCarousel != null)
+            {
+                path = WebHostingEnvironment.WebRootPath
+                    + $"/Images/{companyName}/CarouselImages/{product.UploadImageCarousel[0].FileName}";
+            }
           
             try
             {

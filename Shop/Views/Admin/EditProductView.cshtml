@@ -67,12 +67,10 @@
             </div>
 
             <!-- OVERRIDE thumbnail -->
-            <div class="col-8">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="customFile"
-                           asp-for="UploadThumbnail">
-                    <label class="custom-file-label" for="customFile"><code>OVERRIDE</code> Thumbnail for Product</label>
-                </div>
+            <div class="mb-3 col-8">
+                <label for="formFile" class="form-label">Add Images to the Carousel</label>
+                <input class="form-control" type="file" id="formFile"
+                       asp-for="UploadThumbnail">
             </div>
         </div>
 

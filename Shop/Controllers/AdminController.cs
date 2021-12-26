@@ -97,12 +97,14 @@ namespace Shop.Controllers
              */
             queryDB.EditProduct(product);
 
-            if(product.ThumbnailImage != null)
+            if(product.UploadThumbnail != null)
             {
                 // delete current thumbnail
                 int thumbnailImageID = queryDB.GetThumbnailImage(product.ID).ID;
                 folderAndDirectory.DeleteImage(thumbnailImageID);
                 queryDB.DeleteImage(thumbnailImageID);
+
+                folderAndDirectory.InsertThumbnailImageToFolder(product);
             }
 
             /*

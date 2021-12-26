@@ -19,52 +19,6 @@ namespace Shop.Models
             WebHostEnvironment = e;
         }
 
-        //public void AddThumbnailToProduct(Product product)
-        //{
-        //    string companyName = GetCompanyName(product.ReferenceID);
-
-        //    // establish sql connection
-        //    using (SqlConnection sqlConnection = new SqlConnection(CS))
-        //    {
-        //        // query
-        //        string query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
-        //            + $" VALUES({product.ReferenceID}, {product.ID}, {1}, '/images/{companyName}/ProductThumbnails/{product.UploadThumbnail.FileName}');";
-        //        SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
-
-        //        // open sql connection
-        //        sqlConnection.Open();
-
-        //        // add thumbnail to DB
-        //        sqlCommand.ExecuteNonQuery();
-
-        //        // close sql connection
-        //        sqlConnection.Close();
-        //    }
-        //}
-
-        //public void AddCarouselImage(Product product)
-        //{
-        //    string companyName = GetCompanyName(product.ReferenceID);
-
-        //    // establish sql connection
-        //    using (SqlConnection sqlConnection = new SqlConnection(CS))
-        //    {
-        //        // query
-        //        string query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
-        //            + $" VALUES({product.ReferenceID}, {product.ID}, {0}, '/images/{companyName}/CarouselImages/{product.Im}');";
-        //        SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
-
-        //        // open sql connection
-        //        sqlConnection.Open();
-
-        //        // add thumbnail to DB
-        //        sqlCommand.ExecuteNonQuery();
-
-        //        // close sql connection
-        //        sqlConnection.Close();
-        //    }
-        //}
-
         public void DeleteImage(int imageID)
         {
             // establish sql connection
@@ -308,7 +262,7 @@ namespace Shop.Models
                 string companyName = GetCompanyName(product.ReferenceID);
                 string query;
                 SqlCommand sqlCommand;
-                if (product.ThumbnailImage != null)
+                if (product.UploadThumbnail != null)
                 {
                     /*
                      * THUMBNAIL IMAGE
@@ -323,14 +277,20 @@ namespace Shop.Models
                 /*
                  * CAROUSEL IMAGES
                  */
-                foreach (IFormFile imageFile in product.UploadImageCarousel)
+                 try
                 {
-                    // query
-                    query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
-                        + $" VALUES({product.ReferenceID}, {product.ID}, {0}, '/images/{companyName}/CarouselImages/{imageFile.FileName}');";
-                    sqlCommand = new SqlCommand(query, sqlConnection);
-                    //Console.WriteLine($"CAROUSEL QUERY: {query}");
-                    sqlCommand.ExecuteNonQuery();
+                    foreach (IFormFile imageFile in product.UploadImageCarousel)
+                    {
+                        // query
+                        query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
+                            + $" VALUES({product.ReferenceID}, {product.ID}, {0}, '/images/{companyName}/CarouselImages/{imageFile.FileName}');";
+                        sqlCommand = new SqlCommand(query, sqlConnection);
+                        //Console.WriteLine($"CAROUSEL QUERY: {query}");
+                        sqlCommand.ExecuteNonQuery();
+                    }
+                } catch(Exception e)
+                {
+                    // no images to upload
                 }
 
                 // close sql connection
