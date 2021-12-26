@@ -7,11 +7,28 @@ namespace Shop.Models
 {
     public class FolderAndDirectory
     {
-        public IWebHostEnvironment WebHostingEnvironment { get; set; }
+        private readonly IWebHostEnvironment WebHostingEnvironment;
 
         public FolderAndDirectory(IWebHostEnvironment e)
         {
             WebHostingEnvironment = e;
+        }
+
+        public void DeleteImage(int imageID)
+        {
+            try
+            {
+                QueryDB queryDB = new QueryDB();
+                string imagePath = queryDB.GetImage(imageID).ImagePath;
+
+                string webRootPath = WebHostingEnvironment.WebRootPath + imagePath;
+                Console.WriteLine($"WebRootPath: {webRootPath}");
+
+                File.Delete(webRootPath);
+            } catch(FileNotFoundException e)
+            {
+                Console.WriteLine($"File not Found: {e}");
+            }
         }
 
         public void InsertThumbnailImageToFolder(Product product)
@@ -22,7 +39,6 @@ namespace Shop.Models
             string dir = WebHostingEnvironment.WebRootPath + $"/Images/{companyName}/ProductThumbnails";
             string path = WebHostingEnvironment.WebRootPath
                 + $"/Images/{companyName}/ProductThumbnails/{product.UploadThumbnail.FileName}";
-            //Console.WriteLine($"PATH FOR THUMBNAIL: {path}");
 
             try
             {
@@ -46,13 +62,13 @@ namespace Shop.Models
 
         public void InsertCarouselImagesToFolder(Product product)
         {
-            QueryDB queryDB = new QueryDB();
+            QueryDB queryDB = new QueryDB(WebHostingEnvironment);
             string companyName = queryDB.GetCompanyName(product.ReferenceID);
 
             string dir = WebHostingEnvironment.WebRootPath + $"/Images/{companyName}/CarouselImages";
             string path = WebHostingEnvironment.WebRootPath
                 + $"/Images/{companyName}/CarouselImages/{product.UploadImageCarousel[0].FileName}";
-            //Console.WriteLine($"PATH FOR Carousel: {path}");
+          
             try
             {
                 if (Directory.Exists(dir))

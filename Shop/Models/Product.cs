@@ -34,6 +34,11 @@ namespace Shop.Models
          */
         public bool Flag { get; set; }
 
+        /*
+         * List of Images: ID
+         */
+        public List<int> CarouselImagesID { get; set; }
+
         public Product() { }
 
         public Product(int id, int referenceID, string name, double price, string desription,

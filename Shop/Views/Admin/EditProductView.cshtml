@@ -57,19 +57,62 @@
         <input type="number" placeholder="@Model.DiscountPercentage" step="0.01" class="form-control"
                asp-for="DiscountPercentage" value="@Model.DiscountPercentage" /> <br />
 
-        <!-- product thumbnail -->
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="customFile"
-                   asp-for="UploadThumbnail">
-            <label class="custom-file-label" for="customFile">Choose Thumbnail for Product</label>
+        <div class="row">
+
+            <!-- current thumbnail-->
+            <div class="col-4">
+                <code>CURRENT THUMBNAIL</code>
+                <img class="img-fluid" src="@Model.ThumbnailImage.ImagePath"
+                     width="125"/>
+            </div>
+
+            <!-- OVERRIDE thumbnail -->
+            <div class="col-8">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile"
+                           asp-for="UploadThumbnail">
+                    <label class="custom-file-label" for="customFile"><code>OVERRIDE</code> Thumbnail for Product</label>
+                </div>
+            </div>
         </div>
 
         <!-- product carousl of images -->
         <div class="mb-3">
-            <label for="formFileMultiple" class="form-label">AddImages to the Carousel</label>
+            <label for="formFileMultiple" class="form-label">Add Images to the Carousel</label>
             <input class="form-control" type="file" id="formFileMultiple" multiple
                    asp-for="UploadImageCarousel">
         </div>
+
+        <!-- DELETE IMAGES FROM CAROUSEL -->
+        @{
+            int startIndex = 0;
+            if (Model.ImageCarousel.Count > 0)
+            {
+                startIndex = Model.ImageCarousel[0].ImagePath.LastIndexOf('/') + 1;
+            }
+        }
+
+        <div class="row">
+            @foreach(Image image in Model.ImageCarousel)
+            {
+                <div class="col-3">
+                    @{
+                        string fileName = image.ImagePath.Substring(startIndex);
+                    }
+                    <p>@fileName</p>
+                    <img src="@image.ImagePath" height="139" width="225" />
+                </div>  
+            }
+        </div>
+        <br />
+
+        <code>SELECT IMAGES TO DELETE</code>
+        <select class="form-select" multiple size="@Model.ImageCarousel.Count" asp-for="CarouselImagesID">
+            @foreach(Image image in Model.ImageCarousel)
+            {
+                <option value="@image.ID">@image.ImagePath.Substring(startIndex)</option>
+            }
+        </select>
 
         <!-- flag product -->
         @if (Model.Flag == true)

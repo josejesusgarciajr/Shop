@@ -19,6 +19,73 @@ namespace Shop.Models
             WebHostEnvironment = e;
         }
 
+        //public void AddThumbnailToProduct(Product product)
+        //{
+        //    string companyName = GetCompanyName(product.ReferenceID);
+
+        //    // establish sql connection
+        //    using (SqlConnection sqlConnection = new SqlConnection(CS))
+        //    {
+        //        // query
+        //        string query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
+        //            + $" VALUES({product.ReferenceID}, {product.ID}, {1}, '/images/{companyName}/ProductThumbnails/{product.UploadThumbnail.FileName}');";
+        //        SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+        //        // open sql connection
+        //        sqlConnection.Open();
+
+        //        // add thumbnail to DB
+        //        sqlCommand.ExecuteNonQuery();
+
+        //        // close sql connection
+        //        sqlConnection.Close();
+        //    }
+        //}
+
+        //public void AddCarouselImage(Product product)
+        //{
+        //    string companyName = GetCompanyName(product.ReferenceID);
+
+        //    // establish sql connection
+        //    using (SqlConnection sqlConnection = new SqlConnection(CS))
+        //    {
+        //        // query
+        //        string query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
+        //            + $" VALUES({product.ReferenceID}, {product.ID}, {0}, '/images/{companyName}/CarouselImages/{product.Im}');";
+        //        SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+        //        // open sql connection
+        //        sqlConnection.Open();
+
+        //        // add thumbnail to DB
+        //        sqlCommand.ExecuteNonQuery();
+
+        //        // close sql connection
+        //        sqlConnection.Close();
+        //    }
+        //}
+
+        public void DeleteImage(int imageID)
+        {
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "DELETE FROM Image"
+                    + $" WHERE ID = {imageID}";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open sql connection
+                sqlConnection.Open();
+
+                // delete image from DB
+                sqlCommand.ExecuteNonQuery();
+
+                // close sql connection
+                sqlConnection.Close();
+            }
+        }
+
         public void EditProduct(Product product)
         {
             // establish sql connection
@@ -229,7 +296,7 @@ namespace Shop.Models
             return id;
         }
 
-        private void AddProductImages(Product product)
+        public void AddProductImages(Product product)
         {
             // insert product images to database
             using(SqlConnection sqlConnection = new SqlConnection(CS))
@@ -239,15 +306,19 @@ namespace Shop.Models
 
                 // get compnay name
                 string companyName = GetCompanyName(product.ReferenceID);
-
-                /*
-                 * THUMBNAIL IMAGE
-                 */
-                string query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
-                        + $" VALUES({product.ReferenceID}, {product.ID}, {1}, '/images/{companyName}/ProductThumbnails/{product.UploadThumbnail.FileName}');";
-                //Console.WriteLine($"Thumbnail Image Query: {query}");
-                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
-                sqlCommand.ExecuteNonQuery();
+                string query;
+                SqlCommand sqlCommand;
+                if (product.ThumbnailImage != null)
+                {
+                    /*
+                     * THUMBNAIL IMAGE
+                     */
+                    query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
+                            + $" VALUES({product.ReferenceID}, {product.ID}, {1}, '/images/{companyName}/ProductThumbnails/{product.UploadThumbnail.FileName}');";
+                    //Console.WriteLine($"Thumbnail Image Query: {query}");
+                    sqlCommand = new SqlCommand(query, sqlConnection);
+                    sqlCommand.ExecuteNonQuery();
+                }
 
                 /*
                  * CAROUSEL IMAGES

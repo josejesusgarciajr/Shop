@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Models;
 
@@ -79,15 +80,49 @@ namespace Shop.Controllers
             QueryDB queryDB = new QueryDB();
             Product product = queryDB.GetProduct(productID);
 
+            // get images for carousel
+            product.ThumbnailImage = queryDB.GetThumbnailImage(productID);
+            product.ImageCarousel = queryDB.GetCarouselImagesFromProduct(productID);
 
             return View(product);
         }
 
         public IActionResult EditProductInDB(Product product)
         {
-            Console.WriteLine($"Product Name: {product.Name}");
-            QueryDB queryDB = new QueryDB();
+            QueryDB queryDB = new QueryDB(WebHostEnvironment);
+            FolderAndDirectory folderAndDirectory = new FolderAndDirectory(WebHostEnvironment);
+
+            /*
+             * Update Products Basic information
+             */
             queryDB.EditProduct(product);
+
+            if(product.ThumbnailImage != null)
+            {
+                // delete current thumbnail
+                int thumbnailImageID = queryDB.GetThumbnailImage(product.ID).ID;
+                folderAndDirectory.DeleteImage(thumbnailImageID);
+                queryDB.DeleteImage(thumbnailImageID);
+            }
+
+            /*
+             * Remove deleted Carousel images from folders
+             * Delete Images Paths from DB
+             */
+            if(product.CarouselImagesID != null)
+            {
+                foreach(int imageID in product.CarouselImagesID)
+                {
+                    folderAndDirectory.DeleteImage(imageID);
+                    queryDB.DeleteImage(imageID);
+                }
+            }
+
+            // insert carousel images
+            folderAndDirectory.InsertCarouselImagesToFolder(product);
+
+            // add all product images to DB
+            queryDB.AddProductImages(product);
 
             return RedirectToAction("DisplayCompanyInfo", new { companyID = product.ReferenceID});
         }
