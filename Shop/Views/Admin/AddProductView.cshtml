@@ -25,17 +25,17 @@
         <!-- name of product -->
         <label class="lead">Name: </label>
         <input type="text" placeholder="Dancing" class="form-control"
-               asp-for="Name" required/>
+               asp-for="Name" required />
 
         <!-- price of product -->
         <label class="lead">Price: </label>
         <input type="number" step="0.01" placeholder="0.00" class="form-control"
-               asp-for="Price" required/>
+               asp-for="Price" required />
 
         <!-- description of product -->
         <label class="lead">Description: </label>
         <input type="text" placeholder="Express yourself! Feel the beat! Feel the music! Feel Alive!" class="form-control"
-               asp-for="Description" required/> <br />
+               asp-for="Description" required /> <br />
 
         <!-- discount switch -->
         <div class="form-check form-switch container">
@@ -50,10 +50,10 @@
                asp-for="DiscountPercentage" /> <br />
 
         <!-- product thumbnail -->
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="customFile"
-                   asp-for="UploadThumbnail" required>
-            <label class="custom-file-label" for="customFile">Choose Thumbnail for Product</label>
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Choose Thumbnail</label>
+            <input class="form-control" type="file" id="formFile"
+                   asp-for="UploadThumbnail">
         </div>
 
         <!-- product carousl of images -->
