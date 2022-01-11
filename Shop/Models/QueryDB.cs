@@ -19,6 +19,38 @@ namespace Shop.Models
             WebHostEnvironment = e;
         }
 
+        public List<Product> GetSearchProducts(int companyID, string search)
+        {
+            List<Product> products = new List<Product>();
+
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "SELECT ID FROM Product" 
+                    + $" WHERE (Name LIKE '%{search}%' OR [Description] LIKE '%{search}%')"
+                    + $" AND CompanyID = {companyID};";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open sql connection
+                sqlConnection.Open();
+
+                // get searched [products]
+                using(SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        products.Add(GetProduct((int)reader[0]));
+                    }
+                }
+
+                // close sql connection
+                sqlConnection.Close();
+            }
+
+            return products;
+        }
+
         public void DeleteImage(int imageID)
         {
             // establish sql connection
@@ -291,6 +323,7 @@ namespace Shop.Models
                 } catch(Exception e)
                 {
                     // no images to upload
+                    Console.WriteLine($"Error: {e}");
                 }
 
                 // close sql connection

@@ -7,18 +7,37 @@
     <h1 class="display-4">@Model.Name</h1>
 </div>
 
+<!-- search products -->
+<form asp-controller="Home" asp-action="DisplayCompanyHomePage"
+      asp-route-companyID="@Model.ID" >
+    <input type="text" class="form-control"
+           placeholder="Search..." name="search"/>
+    <br />
+</form>
+
 <!-- Display Products -->
 <div class="row">
-    @foreach (Product product in Model.Products)
+    @if(Model.Products.Count == 0)
     {
-        
-        <div class="col-3">
-            <a asp-controller="Home" asp-action="DisplayProductView" asp-route-productID="@product.ID">
-                @product.Name<br />
-                <img src="@product.ThumbnailImage.ImagePath"
-                         width="222" height="360"/>
-            </a>
+        <div class="container">
+            <p class="lead">
+                No results for search:
+                <code>@ViewData["search"]</code>
+            </p>
         </div>
+    } else
+    {
+        @foreach (Product product in Model.Products)
+        {
+        
+            <div class="col-3">
+                <a asp-controller="Home" asp-action="DisplayProductView" asp-route-productID="@product.ID">
+                    @product.Name<br />
+                    <img src="@product.ThumbnailImage.ImagePath"
+                             width="222" height="360"/>
+                </a>
+            </div>
+        }
     }
 </div>
 

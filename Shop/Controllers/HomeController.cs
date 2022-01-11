@@ -38,15 +38,19 @@ namespace Shop.Controllers
             return View(Companies);
         }
 
-        public IActionResult DisplayCompanyHomePage(int companyID)
+        public IActionResult DisplayCompanyHomePage(int companyID, string search = null)
         {
-            Console.WriteLine($"Company: {companyID}");
             /*
              * Find CompanyID
              */
             QueryDB queryDB = new QueryDB();
             Company company = queryDB.GetCompany(companyID);
 
+            if(search != null)
+            {
+                company.Products = queryDB.GetSearchProducts(companyID, search);
+            }
+            ViewData["search"] = search;
             return View(company);
         }
 
@@ -55,7 +59,7 @@ namespace Shop.Controllers
             // get product
             QueryDB queryDB = new QueryDB();
             Product product = queryDB.GetProduct(productID);
-            Console.WriteLine($"Image Carousel Count: {product.ImageCarousel.Count}");
+           
             return View(product);
         }
 

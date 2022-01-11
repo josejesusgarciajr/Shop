@@ -50,6 +50,11 @@ INSERT INTO Product(CompanyID, Name, Price, Description,
  VALUES (2, 'Dance', 15.99, 'Express yourself! Feel the beat! Feel the music! Feel Alive!',
  	0, 0.00, 0);
 
+INSERT INTO Product(CompanyID, Name, Price, Description,
+ DiscountBool, DiscountPercentage, Flag)
+ VALUES (2, 'Climbing', 24.99, 'Learn how to climb!',
+ 	0, 0.00, 0);
+
 /*
 	create table for images
 */
@@ -67,6 +72,7 @@ CREATE TABLE Image(
 */
 
 INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)
-VALUES ();
+VALUES (2, 1, 1, '/images/Vanessa/ProductThumbnails/dancing.webp');
 
-
+INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)
+VALUES (2, 2, 1, '/images/Vanessa/ProductThumbnails/climbing.webp');
