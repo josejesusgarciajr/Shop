@@ -19,6 +19,26 @@ namespace Shop.Models
             WebHostEnvironment = e;
         }
 
+        private string CleanUpApostrophe(string text)
+        {
+            string cleanUp = "";
+
+            int index = 0;
+            while(index < text.Length)
+            {
+                if(text[index] == '\'')
+                {
+                    cleanUp += text[index] + "'";
+                } else
+                {
+                    cleanUp += text[index];
+                }
+                index++;
+            }
+
+            return cleanUp;
+        }
+
         public List<Product> GetSearchProducts(int companyID, string search)
         {
             List<Product> products = new List<Product>();
@@ -96,10 +116,13 @@ namespace Shop.Models
                 {
                     flag = 1;
                 }
+
+                string nameOfProduct = CleanUpApostrophe(product.Name);
+                string description = CleanUpApostrophe(product.Description);
                 // query
                 string query = "UPDATE Product" 
-                    + $" SET Name = '{product.Name}', Price = {product.Price}, " 
-                    + $"[Description] = '{product.Description}', DiscountBool = {discountBool},"
+                    + $" SET Name = '{nameOfProduct}', Price = {product.Price}, " 
+                    + $"[Description] = '{description}', DiscountBool = {discountBool},"
                     + $" DiscountPercentage = {product.DiscountPercentage}, Flag = {flag}"
                     + $" WHERE ID = {product.ID};";
                 Console.WriteLine($"Edit Query: {query}");
@@ -231,11 +254,15 @@ namespace Shop.Models
                 {
                     flag = 1;
                 }
+
+                string nameOfProduct = CleanUpApostrophe(product.Name);
+                string description = CleanUpApostrophe(product.Description);
                 // query
                 string query = "INSERT INTO Product(CompanyID, Name, Price, Description,"
                     + " DiscountBool, DiscountPercentage, Flag)"
-                    + $" VALUES({product.ReferenceID}, '{product.Name}', {product.Price}, '{product.Description}',"
+                    + $" VALUES({product.ReferenceID}, '{nameOfProduct}', {product.Price}, '{description}',"
                     + $" {discountBool}, {product.DiscountPercentage}, {flag});";
+                Console.WriteLine($"Query: {query}");
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 //Console.WriteLine($"Add Product Query: {query}");
                 // open sql connection
