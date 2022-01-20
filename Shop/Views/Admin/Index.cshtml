@@ -10,17 +10,34 @@
 <!-- buttons -->
 <div class="container text-center">
 
-    @foreach(Company company in ViewBag.Companies)
-    {
-         <a class="btn btn-success"
-            asp-controller="Admin" asp-action="DisplayCompanyInfo"
-            asp-route-companyID="@company.ID">
-             @company.Name
-         </a>
-    }
     <a asp-controller="Admin" asp-action="AddCompanyView"
-       class="btn btn-primary">Add Company</a>
+       class="btn btn-primary">Add Company</a> <br /><br />
 
-    <a asp-controller="Admin" asp-action="AddProductView"
-       class="btn btn-primary">Add Product</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Company Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Mission Statement</th>
+                <th scope="col">Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Company company in ViewBag.Companies)
+            {
+                <tr>
+                    <th scope="row">@company.Name</th>
+                    <td>@company.Address</td>
+                    <td>@company.MissionStatment</td>
+                    <td>
+                        <a class="btn btn-success"
+                           asp-controller="Admin" asp-action="DisplayCompanyInfo"
+                           asp-route-companyID="@company.ID">
+                            Manage Company
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

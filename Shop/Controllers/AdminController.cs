@@ -58,10 +58,11 @@ namespace Shop.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult AddProductView()
+        public IActionResult AddProductView(int companyID = -1)
         {
             QueryDB queryDB = new QueryDB();
             ViewBag.Companies = queryDB.GetCompanies();
+            ViewData["companyID"] = companyID;
 
             return View();
         }

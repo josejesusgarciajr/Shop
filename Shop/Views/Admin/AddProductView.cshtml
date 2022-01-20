@@ -18,7 +18,20 @@
                 asp-for="ReferenceID">
             @foreach (Company company in ViewBag.Companies)
             {
-                <option value="@company.ID">@company.Name</option>
+                if (company.ID.Equals(ViewData["companyID"]))
+                {
+                    <option value="@company.ID"
+                            selected>
+                        @company.Name
+                    </option>
+                }
+                else
+                {
+                    <option value="@company.ID"
+                            disabled>
+                        @company.Name
+                    </option>
+                }
             }
         </select>
 
