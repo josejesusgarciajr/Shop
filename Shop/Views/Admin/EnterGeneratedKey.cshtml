@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "Enter Generated Key";
+}
+
+
+<body class="text-center">
+    <form class="form-signin" asp-controller="Admin" asp-action="TestAuthentication">
+        <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">SECURE PROMPT</h1>
+        <label class="lead">Enter Key</label>
+        <input type="number" name="key"
+               class="form-control text-center text-muted" placeholder="1998" required autofocus>
+        <br /><br />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+    </form>
+</body>
+
+
+<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
+<link href="../css/prompt.css" rel="stylesheet">

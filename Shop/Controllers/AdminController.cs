@@ -15,6 +15,7 @@ namespace Shop.Controllers
     {
         private readonly IWebHostEnvironment WebHostEnvironment;
         private static int CompanyID = -1;
+        private static Authentication Authentication = new Authentication();
         public AdminController(IWebHostEnvironment e)
         {
             WebHostEnvironment = e;
@@ -26,6 +27,33 @@ namespace Shop.Controllers
             QueryDB queryDB = new QueryDB();
             ViewBag.Companies = queryDB.GetCompanies();
             return View();
+        }
+
+        public IActionResult EnterGeneratedKey()
+        {
+            Random rand = new Random();
+
+            int key = rand.Next(0, 10000);
+            Authentication.Key = key;
+
+            string senderEmail = Environment.GetEnvironmentVariable("SENDER_EMAIL");
+            string senderPassword = Environment.GetEnvironmentVariable("SENDER_PASSWORD");
+            string reciverEmail = senderEmail;
+
+            Email email = new Email(senderEmail, senderPassword, reciverEmail, key);
+            email.SendEmail();
+
+            return View();
+        }
+
+        public IActionResult TestAuthentication(int key)
+        {
+            if(Authentication.Key == key)
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult DisplayCompanyInfo(int companyID)
