@@ -32,6 +32,8 @@ namespace Shop.Controllers
 
         public IActionResult Index()
         {
+            HttpContext.Session.Clear();
+
             QueryDB queryDB = new QueryDB();
             List<Company> Companies = queryDB.GetCompanies();
 
@@ -40,6 +42,8 @@ namespace Shop.Controllers
 
         public IActionResult DisplayCompanyHomePage(int companyID, string search = null)
         {
+            HttpContext.Session.Clear();
+
             /*
              * Find CompanyID
              */
@@ -56,6 +60,8 @@ namespace Shop.Controllers
 
         public IActionResult DisplayProductView(int productID)
         {
+            HttpContext.Session.Clear();
+
             // get product
             QueryDB queryDB = new QueryDB();
             Product product = queryDB.GetProduct(productID);
@@ -65,6 +71,7 @@ namespace Shop.Controllers
 
         public IActionResult Privacy()
         {
+            HttpContext.Session.Clear();
             return View();
         }
 

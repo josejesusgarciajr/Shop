@@ -17,11 +17,6 @@ namespace Shop
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            //Host.CreateDefaultBuilder(args)
-            //    .ConfigureWebHostDefaults(webBuilder =>
-            //    {
-            //        webBuilder.UseStartup<Startup>();
-            //    });
 
             /*
              * Test to see if this allows 
@@ -39,5 +34,6 @@ namespace Shop
                     webBuilder.UseKestrel(options => { options.Limits.MaxRequestBodySize = null; })
                     .UseStartup<Startup>();
                 });
+
     }
 }

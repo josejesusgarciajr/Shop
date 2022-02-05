@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +21,23 @@ namespace Shop.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            QueryDB queryDB = new QueryDB();
-            ViewBag.Companies = queryDB.GetCompanies();
-            return View();
+            if(HttpContext.Session.GetInt32("key") == null)
+            {
+                /*
+                 * Session has not yet been implemented
+                 * Redirect to home page
+                 */
+                return RedirectToAction("Index", "Home");
+            }
+
+            if(HttpContext.Session.GetInt32("key") == Authentication.Key)
+            {
+                QueryDB queryDB = new QueryDB();
+                ViewBag.Companies = queryDB.GetCompanies();
+                return View();
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult EnterGeneratedKey()
@@ -50,6 +61,7 @@ namespace Shop.Controllers
         {
             if(Authentication.Key == key)
             {
+                HttpContext.Session.SetInt32("key", key);
                 return RedirectToAction("Index", "Admin");
             }
 
@@ -58,104 +70,186 @@ namespace Shop.Controllers
 
         public IActionResult DisplayCompanyInfo(int companyID)
         {
-            QueryDB queryDB = new QueryDB();
-            Company company = queryDB.GetCompany(companyID);
-            CompanyID = companyID;
+            if(HttpContext.Session.GetInt32("key") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            return View(company);
+            if(HttpContext.Session.GetInt32("key") == Authentication.Key)
+            {
+                QueryDB queryDB = new QueryDB();
+                Company company = queryDB.GetCompany(companyID);
+                CompanyID = companyID;
+
+                return View(company);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult DeleteProductFromDB(int productID)
         {
-            QueryDB queryDB = new QueryDB();
-            queryDB.DeleteProduct(productID);
+            if(HttpContext.Session.GetInt32("key") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            return RedirectToAction("DisplayCompanyInfo", new { companyID = CompanyID });
+            if(HttpContext.Session.GetInt32("key") == Authentication.Key)
+            {
+                QueryDB queryDB = new QueryDB();
+                queryDB.DeleteProduct(productID);
+
+                return RedirectToAction("DisplayCompanyInfo", new { companyID = CompanyID });
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult AddCompanyView()
         {
-            return View();
+            if(HttpContext.Session.GetInt32("key") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if(HttpContext.Session.GetInt32("key") == Authentication.Key)
+            {
+                return View();
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult AddCompanyToDB(Company company)
         {
-            QueryDB queryDB = new QueryDB();
-            queryDB.AddCompany(company);
+            if(HttpContext.Session.GetInt32("key") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if(HttpContext.Session.GetInt32("key") == Authentication.Key)
+            {
+                QueryDB queryDB = new QueryDB();
+                queryDB.AddCompany(company);
+
+                return RedirectToAction("Index", "Home");
+            }
 
             return RedirectToAction("Index", "Home");
         }
 
         public IActionResult AddProductView(int companyID = -1)
         {
-            QueryDB queryDB = new QueryDB();
-            ViewBag.Companies = queryDB.GetCompanies();
-            ViewData["companyID"] = companyID;
+            if(HttpContext.Session.GetInt32("key") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            return View();
+            if(HttpContext.Session.GetInt32("key") == Authentication.Key)
+            {
+                QueryDB queryDB = new QueryDB();
+                ViewBag.Companies = queryDB.GetCompanies();
+                ViewData["companyID"] = companyID;
+
+                return View();
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult AddProductToDB(Product product)
         {
-            // add company to DB
-            QueryDB queryDB = new QueryDB(WebHostEnvironment);
-            queryDB.AddProduct(product);
+            if(HttpContext.Session.GetInt32("key") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyID = product.ReferenceID });
+            if(HttpContext.Session.GetInt32("key") == Authentication.Key)
+            {
+                // add company to DB
+                QueryDB queryDB = new QueryDB(WebHostEnvironment);
+                queryDB.AddProduct(product);
+
+                return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyID = product.ReferenceID });
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult EditProductView(int productID)
         {
-            QueryDB queryDB = new QueryDB();
-            Product product = queryDB.GetProduct(productID);
+            if(HttpContext.Session.GetInt32("key") == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            // get images for carousel
-            product.ThumbnailImage = queryDB.GetThumbnailImage(productID);
-            product.ImageCarousel = queryDB.GetCarouselImagesFromProduct(productID);
+            if(HttpContext.Session.GetInt32("key") == Authentication.Key)
+            {
+                QueryDB queryDB = new QueryDB();
+                Product product = queryDB.GetProduct(productID);
 
-            return View(product);
+                // get images for carousel
+                product.ThumbnailImage = queryDB.GetThumbnailImage(productID);
+                product.ImageCarousel = queryDB.GetCarouselImagesFromProduct(productID);
+
+                return View(product);
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult EditProductInDB(Product product)
         {
-            QueryDB queryDB = new QueryDB(WebHostEnvironment);
-            FolderAndDirectory folderAndDirectory = new FolderAndDirectory(WebHostEnvironment);
 
-            /*
-             * Update Products Basic information
-             */
-            queryDB.EditProduct(product);
-
-            if(product.UploadThumbnail != null)
+            if(HttpContext.Session.GetInt32("key") == null)
             {
-                // delete current thumbnail
-                int thumbnailImageID = queryDB.GetThumbnailImage(product.ID).ID;
-                folderAndDirectory.DeleteImage(thumbnailImageID);
-                queryDB.DeleteImage(thumbnailImageID);
-
-                folderAndDirectory.InsertThumbnailImageToFolder(product);
+                return RedirectToAction("Index", "Home");
             }
 
-            /*
-             * Remove deleted Carousel images from folders
-             * Delete Images Paths from DB
-             */
-            if(product.CarouselImagesID != null)
+            if(HttpContext.Session.GetInt32("key") == Authentication.Key)
             {
-                foreach(int imageID in product.CarouselImagesID)
+
+                QueryDB queryDB = new QueryDB(WebHostEnvironment);
+                FolderAndDirectory folderAndDirectory = new FolderAndDirectory(WebHostEnvironment);
+
+                /*
+                 * Update Products Basic information
+                 */
+                queryDB.EditProduct(product);
+
+                if(product.UploadThumbnail != null)
                 {
-                    folderAndDirectory.DeleteImage(imageID);
-                    queryDB.DeleteImage(imageID);
+                    // delete current thumbnail
+                    int thumbnailImageID = queryDB.GetThumbnailImage(product.ID).ID;
+                    folderAndDirectory.DeleteImage(thumbnailImageID);
+                    queryDB.DeleteImage(thumbnailImageID);
+
+                    folderAndDirectory.InsertThumbnailImageToFolder(product);
                 }
+
+                /*
+                 * Remove deleted Carousel images from folders
+                 * Delete Images Paths from DB
+                 */
+                if(product.CarouselImagesID != null)
+                {
+                    foreach(int imageID in product.CarouselImagesID)
+                    {
+                        folderAndDirectory.DeleteImage(imageID);
+                        queryDB.DeleteImage(imageID);
+                    }
+                }
+
+                // insert carousel images
+                folderAndDirectory.InsertCarouselImagesToFolder(product);
+
+                // add all product images to DB
+                queryDB.AddProductImages(product);
+
+                return RedirectToAction("DisplayCompanyInfo", new { companyID = product.ReferenceID});
             }
 
-            // insert carousel images
-            folderAndDirectory.InsertCarouselImagesToFolder(product);
-
-            // add all product images to DB
-            queryDB.AddProductImages(product);
-
-            return RedirectToAction("DisplayCompanyInfo", new { companyID = product.ReferenceID});
+            return RedirectToAction("Index", "Home");
         }
     }
 }
