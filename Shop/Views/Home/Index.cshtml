@@ -6,6 +6,22 @@
 
     <h1 class="display-4">Companies</h1>
 
+    <!-- SEARCH FOR COMPANY -->
+    <form asp-controller="Home" asp-action="Index"> 
+        <input name="search" type="text" class="form-control"
+               placeholder="Search for Companies!"/>
+    </form>
+    <br />
+
+    @if(Model.Count == 0)
+    {
+        <p class="lead">
+            No Companies with
+            <code>@ViewData["search"]</code>
+             in the name.
+        </p>
+    }
+
     @foreach(Company company in Model)
     {
         <a asp-controller="Home" asp-action="DisplayCompanyHomePage" asp-route-companyID="@company.ID" asp-route-search="">

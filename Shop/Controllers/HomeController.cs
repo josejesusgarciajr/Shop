@@ -17,27 +17,33 @@ namespace Shop.Controllers
          * Vaness's Company
          */
         public static Company Vanessa { get; set; }
-        private static List<Product> VanessaProducts = new List<Product>();
 
         /*
          * Jose's Company
          */
         public static Company Jose { get; set; }
-        private static List<Product> JoseProducts = new List<Product>();
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string search = null)
         {
             HttpContext.Session.Clear();
 
             QueryDB queryDB = new QueryDB();
-            List<Company> Companies = queryDB.GetCompanies();
+            List<Company> companies = new List<Company>();
 
-            return View(Companies);
+            if (search == null)
+            {
+                companies = queryDB.GetCompanies();
+            } else
+            {
+                companies = queryDB.GetCompaniesBySearch(search);
+            }
+            ViewData["search"] = search;
+            return View(companies);
         }
 
         public IActionResult DisplayCompanyHomePage(int companyID, string search = null)

@@ -634,5 +634,37 @@ namespace Shop.Models
 
             return companies;
         }
+
+        public List<Company> GetCompaniesBySearch(string search)
+        {
+            List<Company> companies = new List<Company>();
+
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "SELECT * FROM Company "
+                    + $" WHERE Name LIKE '%{search}%';";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                sqlConnection.Open();
+
+                // get companies that match the search
+                using(SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        int companyID = (int)reader[0];
+                        List<Product> products = GetProductsFromCompany(companyID);
+                        companies.Add(new Company(companyID, (string)reader[1],
+                            (string)reader[2], (string)reader[3], products, (string)reader[4]));
+                    }
+                }
+
+                sqlConnection.Close();
+            }
+
+            return companies;
+        }
     }
 }
