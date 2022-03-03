@@ -59,9 +59,9 @@ namespace Shop.Models
 
                 //client.Send(message);
 
-            } catch(Exception e)
+            } catch(Exception)
             {
-                //Console.WriteLine($"Something went wrong Email: {SenderEmailAddress}, Password: {SenderEmailPassword}: {e}");
+                //Console.WriteLine($"Something went wrong Email: {SenderEmailAddress}, Password: {SenderEmailPassword}");
             }
         }
     }

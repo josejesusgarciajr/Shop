@@ -163,27 +163,60 @@ namespace Shop.Models
         public void DeleteProduct(int productID)
         {
             /*
-             * first delete the product carousel images
-             * since they depend on product
+             *  delete all images associated with image
              */
-            DeleteProductCarouselImages(productID);
+            FolderAndDirectory folderAndDirectory = new FolderAndDirectory(WebHostEnvironment);
 
-            // establish sql connection
-            using (SqlConnection sqlConnection = new SqlConnection(CS))
+            List<int> imageIDList = new List<int>();
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
             {
                 // query
-                string query = "DELETE FROM Product"
-                    + $" WHERE ID = {productID};";
+                string query = "SELECT ID FROM Image"
+                    + $" WHERE ProductID = '{productID}';";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
                 // open sql connection
                 sqlConnection.Open();
 
+                using(SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        imageIDList.Add((int)reader[0]);
+                    }
+                }
+
+                // close slq connection
+                sqlConnection.Close();
+            }
+
+            foreach(int imageID in imageIDList)
+            {
+                folderAndDirectory.DeleteImage(imageID);
+            }
+
+            /*
+             * Now delete the product carousel images from database
+             * they depend on product
+             */
+            DeleteProductCarouselImages(productID);
+
+            // establish sql connection
+            using (SqlConnection sqlConnection2 = new SqlConnection(CS))
+            {
+                // query
+                string query = "DELETE FROM Product"
+                    + $" WHERE ID = {productID};";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection2);
+
+                // open sql connection
+                sqlConnection2.Open();
+
                 // delete product from database
                 sqlCommand.ExecuteNonQuery();
 
                 // close sql connectino
-                sqlConnection.Close();
+                sqlConnection2.Close();
             }
         }
 

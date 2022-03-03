@@ -96,7 +96,7 @@ namespace Shop.Controllers
 
             if(HttpContext.Session.GetInt32("key") == Authentication.Key)
             {
-                QueryDB queryDB = new QueryDB();
+                QueryDB queryDB = new QueryDB(WebHostEnvironment);
                 queryDB.DeleteProduct(productID);
 
                 return RedirectToAction("DisplayCompanyInfo", new { companyID = CompanyID });
