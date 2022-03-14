@@ -8,7 +8,8 @@ namespace Shop.Models
 {
     public class QueryDB
     {
-        private string CS = "Server=localhost;Database=Arizona;User Id=sa;Password=myPassw0rd;";
+        private string CS = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+        // Server=localhost;Database=Arizona;User Id=sa;Password=myPassw0rd;
         private IWebHostEnvironment WebHostEnvironment { get; set; }
         public QueryDB()
         {
@@ -18,6 +19,7 @@ namespace Shop.Models
         {
             WebHostEnvironment = e;
         }
+
 
         private string CleanUpApostrophe(string text)
         {
@@ -125,7 +127,6 @@ namespace Shop.Models
                     + $"[Description] = '{description}', DiscountBool = {discountBool},"
                     + $" DiscountPercentage = {product.DiscountPercentage}, Flag = {flag}"
                     + $" WHERE ID = {product.ID};";
-                Console.WriteLine($"Edit Query: {query}");
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
                 // open sql connection
@@ -295,9 +296,7 @@ namespace Shop.Models
                     + " DiscountBool, DiscountPercentage, Flag)"
                     + $" VALUES({product.ReferenceID}, '{nameOfProduct}', {product.Price}, '{description}',"
                     + $" {discountBool}, {product.DiscountPercentage}, {flag});";
-                Console.WriteLine($"Query: {query}");
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
-                //Console.WriteLine($"Add Product Query: {query}");
                 // open sql connection
                 sqlConnection.Open();
 
@@ -361,7 +360,6 @@ namespace Shop.Models
                      */
                     query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
                             + $" VALUES({product.ReferenceID}, {product.ID}, {1}, '/images/{companyName}/ProductThumbnails/{product.UploadThumbnail.FileName}');";
-                    //Console.WriteLine($"Thumbnail Image Query: {query}");
                     sqlCommand = new SqlCommand(query, sqlConnection);
                     sqlCommand.ExecuteNonQuery();
                 }
@@ -377,7 +375,6 @@ namespace Shop.Models
                         query = "INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)"
                             + $" VALUES({product.ReferenceID}, {product.ID}, {0}, '/images/{companyName}/CarouselImages/{imageFile.FileName}');";
                         sqlCommand = new SqlCommand(query, sqlConnection);
-                        //Console.WriteLine($"CAROUSEL QUERY: {query}");
                         sqlCommand.ExecuteNonQuery();
                     }
                 } catch(Exception e)

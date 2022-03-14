@@ -20,9 +20,7 @@ namespace Shop.Models
             {
                 QueryDB queryDB = new QueryDB();
                 string imagePath = queryDB.GetImage(imageID).ImagePath;
-
                 string webRootPath = WebHostingEnvironment.WebRootPath + imagePath;
-                Console.WriteLine($"WebRootPath: {webRootPath}");
 
                 File.Delete(webRootPath);
             } catch(FileNotFoundException e)
