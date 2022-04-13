@@ -13,5 +13,6 @@
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.4" />
   </ItemGroup>
 </Project>

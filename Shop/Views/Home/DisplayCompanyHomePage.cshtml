@@ -29,14 +29,16 @@
     {
         @foreach (Product product in Model.Products)
         {
-        
-            <div class="col-3">
-                <a asp-controller="Home" asp-action="DisplayProductView" asp-route-productID="@product.ID">
-                    @product.Name<br />
-                    <img src="@product.ThumbnailImage.ImagePath"
-                             width="222" height="360"/>
-                </a>
-            </div>
+            if(product.Flag != true)
+            {
+                <div class="col-3">
+                    <a asp-controller="Home" asp-action="DisplayProductView" asp-route-productID="@product.ID">
+                        @product.Name<br />
+                        <img src="@product.ThumbnailImage.ImagePath"
+                                 width="222" height="360"/>
+                    </a>
+                </div>
+            }
         }
     }
 </div>

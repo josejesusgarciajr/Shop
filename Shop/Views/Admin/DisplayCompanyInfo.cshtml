@@ -21,6 +21,7 @@
             <th scope="col">Product Name</th>
             <th scope="col">Price</th>
             <th scope="col">Description</th>
+            <th spope="col">Flagged</th>
             <th scope="col">Management</th>
         </tr>
     </thead>
@@ -28,21 +29,30 @@
 
         @foreach(Product product in Model.Products)
         {
-            <tr>
-                <th scope="row">@product.Name</th>
-                <td>@product.Price</td>
-                <td>@product.Description</td>
-                <td>
-                    <a class="btn btn-info"
-                       asp-controller="Admin" asp-action="EditProductView" asp-route-productID="@product.ID">
-                        Edit
-                    </a>
-                    <a class="btn btn-danger"
-                       asp-controller="Admin" asp-action="DeleteProductFromDB" asp-route-productID="@product.ID">
-                        Delete
-                    </a>
-                </td>
-            </tr>
+        <tr>
+            <th scope="row">@product.Name</th>
+            <td>@product.Price</td>
+            <td>@product.Description</td>
+            @if (product.Flag == true)
+            {
+                <td><code>FLAGGED</code></td>
+            }
+            else
+            {
+                <td>Available</td>
+            }
+
+            <td>
+                <a class="btn btn-info"
+                   asp-controller="Admin" asp-action="EditProductView" asp-route-productID="@product.ID">
+                    Edit
+                </a>
+                <a class="btn btn-danger"
+                   asp-controller="Admin" asp-action="DeleteProductFromDB" asp-route-productID="@product.ID">
+                    Delete
+                </a>
+            </td>
+        </tr>
         }
         
     </tbody>
