@@ -66,7 +66,12 @@ namespace Shop.Controllers
             // get product
             QueryDB queryDB = new QueryDB();
             Product product = queryDB.GetProduct(productID);
-           
+
+            if(product.Flag == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View(product);
         }
 
