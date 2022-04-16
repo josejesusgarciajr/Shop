@@ -29,8 +29,13 @@
     </ol>
     <div class="carousel-inner">
         @{
-            Image firstImage = Model.ImageCarousel[0];
+            Image firstImage = new Image();
             count = 0;
+            if (Model.ImageCarousel.Count != 0)
+            {
+                firstImage = Model.ImageCarousel[0];
+            }
+
         }
 
         @foreach (Image image in Model.ImageCarousel)
