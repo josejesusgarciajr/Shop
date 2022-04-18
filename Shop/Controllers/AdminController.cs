@@ -54,7 +54,7 @@ namespace Shop.Controllers
             Email email = new Email(senderEmail, senderPassword, reciverEmail, key);
             email.SendEmail();
 
-            return View();
+            return View((object)key);
         }
 
         public IActionResult TestAuthentication(int key)
