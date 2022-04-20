@@ -34,18 +34,18 @@
         {
             if (product.Flag != true)
             {
-                <div class="col-3">
+                <div class="col-md-12 text-center">
                     <a asp-controller="Home" asp-action="DisplayProductView" asp-route-productID="@product.ID">
                         @product.Name<br />
                         <img src="@product.ThumbnailImage.ImagePath"
                              width="222" height="360" />
                     </a>
                 </div>
-                <br />
-                <br />
             }
         }
     }
+
+    <!-- END OF MOBILE VIEW-->
 }
 else
 {
@@ -74,7 +74,6 @@ else
                                  width="222" height="360" />
                         </a>
                     </div>
-                    <br /><br />
                 }
             }
         }
