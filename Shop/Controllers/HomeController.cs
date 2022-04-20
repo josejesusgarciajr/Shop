@@ -30,6 +30,11 @@ namespace Shop.Controllers
 
         public IActionResult Index(string search = null)
         {
+            // check if mobile device
+            Mobile mobile = new Mobile(HttpContext);
+            ViewData["IsMobileDevice"] = mobile.IsMobileDeviceBrowser();
+            Console.WriteLine($"Is Mobile Device: {ViewData["IsMobileDevice"]}");
+
             QueryDB queryDB = new QueryDB();
             List<Company> companies = new List<Company>();
 
@@ -46,6 +51,11 @@ namespace Shop.Controllers
 
         public IActionResult DisplayCompanyHomePage(int companyID, string search = null)
         {
+            // check if mobile device
+            Mobile mobile = new Mobile(HttpContext);
+            ViewData["IsMobileDevice"] = mobile.IsMobileDeviceBrowser();
+            Console.WriteLine($"Is Mobile Device: {ViewData["IsMobileDevice"]}");
+
             /*
              * Find CompanyID
              */

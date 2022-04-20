@@ -9,15 +9,17 @@
 
 <!-- search products -->
 <form asp-controller="Home" asp-action="DisplayCompanyHomePage"
-      asp-route-companyID="@Model.ID" >
+      asp-route-companyID="@Model.ID">
     <input type="text" class="form-control"
-           placeholder="Search..." name="search"/>
+           placeholder="Search..." name="search" />
     <br />
 </form>
 
-<!-- Display Products -->
-<div class="row">
-    @if(Model.Products.Count == 0)
+@if (ViewData["IsMobileDevice"].Equals("true"))
+{
+    <!-- Mobile Device View -->
+    <!-- Display Products -->
+    @if (Model.Products.Count == 0)
     {
         <div class="container">
             <p class="lead">
@@ -25,24 +27,60 @@
                 <code>@ViewData["search"]</code>
             </p>
         </div>
-    } else
+    }
+    else
     {
         @foreach (Product product in Model.Products)
         {
-            if(product.Flag != true)
+            if (product.Flag != true)
             {
                 <div class="col-3">
                     <a asp-controller="Home" asp-action="DisplayProductView" asp-route-productID="@product.ID">
                         @product.Name<br />
                         <img src="@product.ThumbnailImage.ImagePath"
-                                 width="222" height="360"/>
+                             width="222" height="360" />
                     </a>
                 </div>
+                <br />
                 <br />
             }
         }
     }
-</div>
+}
+else
+{
+    <!-- Computer View -->
+    <!-- Display Products -->
+    <div class="row">
+        @if (Model.Products.Count == 0)
+        {
+            <div class="container">
+                <p class="lead">
+                    No results for search:
+                    <code>@ViewData["search"]</code>
+                </p>
+            </div>
+        }
+        else
+        {
+            @foreach (Product product in Model.Products)
+            {
+                if (product.Flag != true)
+                {
+                    <div class="col-3">
+                        <a asp-controller="Home" asp-action="DisplayProductView" asp-route-productID="@product.ID">
+                            @product.Name<br />
+                            <img src="@product.ThumbnailImage.ImagePath"
+                                 width="222" height="360" />
+                        </a>
+                    </div>
+                    <br /><br />
+                }
+            }
+        }
+    </div>
+}
+
 
 
 <!-- Mission Statement-->
