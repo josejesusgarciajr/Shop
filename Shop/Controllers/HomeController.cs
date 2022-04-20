@@ -56,6 +56,8 @@ namespace Shop.Controllers
             ViewData["IsMobileDevice"] = mobile.IsMobileDeviceBrowser();
             Console.WriteLine($"Is Mobile Device: {ViewData["IsMobileDevice"]}");
 
+            Console.WriteLine($"ViewData[IsMobileDevice].Equals(False): {ViewData["IsMobileDevice"].ToString().Equals("False")}");
+
             /*
              * Find CompanyID
              */
