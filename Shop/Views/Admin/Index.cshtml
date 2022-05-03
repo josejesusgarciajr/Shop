@@ -13,6 +13,22 @@
     <a asp-controller="Admin" asp-action="AddCompanyView"
        class="btn btn-primary">Add Company</a> <br /><br />
 
+    <!-- MESSAGES FOR COMPANIES HIRING-->
+    <div class="alert alert-danger" role="alert">
+        Please Don't add to Vanessa or Jose as these are personal.
+        Please Don't delete Vanessa or Jose or any Products belonging to these two companies.
+    </div>
+    <div class="alert alert-primary" role="alert">
+        Feel Free to add a Company! Add Products to an existing Company as long as they are not
+        the Vanessa or Jose Company.
+        Test all the features!
+        - ADD
+        - UPDATE
+        - DELETE
+    </div>
+
+    <!-- TABLE-->
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -23,7 +39,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(Company company in ViewBag.Companies)
+            @foreach (Company company in ViewBag.Companies)
             {
                 <tr>
                     <th scope="row">@company.Name</th>
