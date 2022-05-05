@@ -98,8 +98,9 @@ else
                 <h5 class="card-title">@note.Description</h5>
                 <p class="card-text">@note.Status</p>
                 <a asp-controller="Home" asp-action="UpdateNoteView"
-                   asp-route-noteID="@note.ID" asp-route-companyID="@note.CompanyID"
+                   asp-route-noteID="@note.ID"
                    class="btn btn-primary">Update</a>
+
                 <a asp-controller="Home" asp-action="DeleteNote"
                    asp-route-noteID="@note.ID" asp-route-companyID="@note.CompanyID"
                    class="btn btn-danger">Delete</a>

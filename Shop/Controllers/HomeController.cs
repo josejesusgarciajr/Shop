@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -52,10 +53,26 @@ namespace Shop.Controllers
 
         public IActionResult AddNotetoCompany(Note note)
         {
-            note.Date = DateTime.Now.ToString("f");
+            note.Date = DateTime.Now.ToString("f", CultureInfo.GetCultureInfo("en-US"));
 
             QueryDB queryDB = new QueryDB();
             queryDB.AddNote(note);
+
+            return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyID = note.CompanyID });
+        }
+
+        public IActionResult UpdateNoteView(int noteID)
+        {
+            QueryDB queryDB = new QueryDB();
+            Note note = queryDB.GetNote(noteID);
+
+            return View(note);
+        }
+
+        public IActionResult UpdateNoteDB(Note note)
+        {
+            QueryDB queryDB = new QueryDB();
+            queryDB.UpdateNote(note);
 
             return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyID = note.CompanyID });
         }

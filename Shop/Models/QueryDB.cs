@@ -41,14 +41,76 @@ namespace Shop.Models
             return cleanUp;
         }
 
+        public Note GetNote(int noteID)
+        {
+            Note note = new Note();
+
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "SELECT * FROM Note"
+                    + $" WHERE ID = {noteID}";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                //open connection
+                sqlConnection.Open();
+
+                // get note from db
+                using(SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        note.ID = (int)reader[0];
+                        note.CompanyID = (int)reader[1];
+                        note.Date = (string)reader[2];
+                        note.Description = (string)reader[3];
+                        note.Status = (string)reader[4];
+                    }
+                }
+
+                // close connection
+                sqlConnection.Close();
+            }
+
+            return note;
+        }
+
         public void AddNote(Note note)
         {
+            note.Description = CleanUpApostrophe(note.Description);
+
             // establish sql connection
             using(SqlConnection sqlConnection = new SqlConnection(CS))
             {
                 // query
                 string query = "INSERT INTO Note(CompanyID, Date, Description, Status)"
                     + $" VALUES({note.CompanyID}, '{note.Date}', '{note.Description}', 'Working on It');";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open connection
+                sqlConnection.Open();
+
+                // add note to db
+                sqlCommand.ExecuteNonQuery();
+
+                // close connection
+                sqlConnection.Close();
+            }
+        }
+
+        public void UpdateNote(Note note)
+        {
+            note.Description = CleanUpApostrophe(note.Description);
+
+            // establish sql connection
+            using (SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "UPDATE NOTE"
+                    + $" SET Description = '{note.Description}', Status = '{note.Status}'"
+                    + $" WHERE ID = {note.ID};";
+    
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
                 // open connection
