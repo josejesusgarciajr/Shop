@@ -1,0 +1,23 @@
+﻿@model Note;
+
+@{
+    ViewData["Title"] = "Add Note!";
+}
+
+<div>
+    <h1 class="display-4">Add Note</h1>
+</div>
+
+<div class="container">
+
+    <form asp-controller="Home" asp-action="AddNotetoCompany">
+
+        <input asp-for="CompanyID"
+               type="hidden" value=@ViewData["companyID"] />
+        <textarea asp-for="Description" placeholder="Hire Jose as a .Net Developer!"
+                  class="form-control"></textarea> <br />
+
+        <input type="submit" class="btn btn-success" value="Add Note"/>
+    </form>
+
+</div>

@@ -80,7 +80,35 @@ else
     </div>
 }
 
+<!-- Company Notes -->
+<div class="container">
 
+    <h1 class="display-4">@Model.Name To Do List</h1>
+
+    <a asp-controller="Home" asp-action="AddNoteView" asp-route-companyID="@Model.ID"
+       class="btn btn-success">Add Note</a> <br /> <br />
+
+    @foreach (Note note in Model.ToDoList)
+    {
+        <div class="card">
+            <div class="card-header">
+                @note.Date
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@note.Description</h5>
+                <p class="card-text">@note.Status</p>
+                <a asp-controller="Home" asp-action="UpdateNoteView"
+                   asp-route-noteID="@note.ID" asp-route-companyID="@note.CompanyID"
+                   class="btn btn-primary">Update</a>
+                <a asp-controller="Home" asp-action="DeleteNote"
+                   asp-route-noteID="@note.ID" asp-route-companyID="@note.CompanyID"
+                   class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+
+        <br />
+    }
+</div>
 
 <!-- Mission Statement-->
 <div class="container">

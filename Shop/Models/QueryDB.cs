@@ -41,6 +41,47 @@ namespace Shop.Models
             return cleanUp;
         }
 
+        public void AddNote(Note note)
+        {
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "INSERT INTO Note(CompanyID, Date, Description, Status)"
+                    + $" VALUES({note.CompanyID}, '{note.Date}', '{note.Description}', 'Working on It');";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open connection
+                sqlConnection.Open();
+
+                // add note to db
+                sqlCommand.ExecuteNonQuery();
+
+                // close connection
+                sqlConnection.Close();
+            }
+        }
+
+        public void DeleteNote(int noteID)
+        {
+            // establish sql connection
+            using (SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = $"DELETE FROM Note WHERE ID = {noteID};";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open connection
+                sqlConnection.Open();
+
+                // add note to db
+                sqlCommand.ExecuteNonQuery();
+
+                // close connection
+                sqlConnection.Close();
+            }
+        }
+
         public List<Product> GetSearchProducts(int companyID, string search)
         {
             List<Product> products = new List<Product>();
@@ -524,6 +565,38 @@ namespace Shop.Models
             return product;
         }
 
+        public List<Note> GetNotesFromCompany(int companyID)
+        {
+            List<Note> notes = new List<Note>();
+
+            // establish sql connection
+            using(SqlConnection sqlConnection = new SqlConnection(CS))
+            {
+                // query
+                string query = "SELECT * FROM Note"
+                    + $" WHERE CompanyID = {companyID};";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                // open connection
+                sqlConnection.Open();
+
+                // get notes from each company
+                using(SqlDataReader reader = sqlCommand.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        notes.Add(new Note((int)reader[0], (int)reader[1],
+                            (string)reader[2], (string)reader[3], (string)reader[4]));
+                    }
+                }
+
+                // close connection
+                sqlConnection.Close();
+            }
+
+            return notes;
+        }
+
         public List<Product> GetProductsFromCompany(int companyID)
         {
             List<Product> products = new List<Product>();
@@ -568,6 +641,7 @@ namespace Shop.Models
                     + $" WHERE ID = {companyID};";
 
                 List<Product> products = GetProductsFromCompany(companyID);
+                List<Note> toDoList = GetNotesFromCompany(companyID);
 
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
 
@@ -581,7 +655,7 @@ namespace Shop.Models
                     {
                         
                         company = new Company(companyID, (string) reader[1], (string) reader[2],
-                            (string)reader[3], products, (string) reader[4]);
+                            (string)reader[3], products, toDoList, (string) reader[4]);
                     }
                 }
 
@@ -646,9 +720,10 @@ namespace Shop.Models
                     {
                         int companyID = (int)reader[0];
                         List<Product> products = GetProductsFromCompany(companyID);
+                        List<Note> toDoList = GetNotesFromCompany(companyID);
 
                         Company company = new Company(companyID, (string)reader[1],
-                            (string)reader[2], (string)reader[3], products, (string)reader[4]);
+                            (string)reader[2], (string)reader[3], products, toDoList, (string)reader[4]);
                         company.ID = (int)reader[0];
                         company.Name = (string)reader[1];
                         company.Address = (string)reader[2];
@@ -686,8 +761,10 @@ namespace Shop.Models
                     {
                         int companyID = (int)reader[0];
                         List<Product> products = GetProductsFromCompany(companyID);
+                        List<Note> toDoList = GetNotesFromCompany(companyID);
+
                         companies.Add(new Company(companyID, (string)reader[1],
-                            (string)reader[2], (string)reader[3], products, (string)reader[4]));
+                            (string)reader[2], (string)reader[3], products, toDoList, (string)reader[4]));
                     }
                 }
 

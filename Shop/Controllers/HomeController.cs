@@ -44,6 +44,30 @@ namespace Shop.Controllers
             return View(companies);
         }
 
+        public IActionResult AddNoteView(int companyID)
+        {
+            ViewData["companyID"] = companyID;
+            return View();
+        }
+
+        public IActionResult AddNotetoCompany(Note note)
+        {
+            note.Date = DateTime.Now.ToString("f");
+
+            QueryDB queryDB = new QueryDB();
+            queryDB.AddNote(note);
+
+            return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyID = note.CompanyID });
+        }
+
+        public IActionResult DeleteNote(int noteID, int companyID)
+        {
+            QueryDB queryDB = new QueryDB();
+            queryDB.DeleteNote(noteID);
+
+            return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyID = companyID });
+        }
+
         public IActionResult DisplayCompanyHomePage(int companyID, string search = null)
         {
             // check if mobile device
@@ -53,6 +77,7 @@ namespace Shop.Controllers
             /*
              * Find CompanyID
              */
+
             QueryDB queryDB = new QueryDB();
             Company company = queryDB.GetCompany(companyID);
 

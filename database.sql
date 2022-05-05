@@ -64,7 +64,7 @@ CREATE TABLE Image(
 	CompanyID int NOT NULL FOREIGN KEY REFERENCES Company(ID),
 	ProductID int NOT NULL FOREIGN KEY REFERENCES Product(ID),
 	Thumbnail bit,
-	ImagePath varchar(100),
+	ImagePath varchar(100)
 );
 
 /*
@@ -76,3 +76,22 @@ VALUES (2, 1, 1, '/images/Vanessa/ProductThumbnails/dancing.webp');
 
 INSERT INTO Image(CompanyID, ProductID, Thumbnail, ImagePath)
 VALUES (2, 2, 1, '/images/Vanessa/ProductThumbnails/climbing.webp');
+
+/*
+	create table for each companies ToDoList
+*/
+
+CREATE TABLE Note(
+	ID int NOT NULL IDENTITY PRIMARY KEY,
+	CompanyID int NOT NULL FOREIGN KEY REFERENCES Company(ID),
+	Date varchar(100),
+	Description varchar(255),
+	Status varchar(100)
+);
+
+/*
+	INSERT first to do
+*/
+
+INSERT INTO Note(CompanyID, Date, Description, Status)
+VALUES(2, 'Saturday, April 23, 2022 11:47 PM', 'Get hired as a .Net Developer in Los Angeles, CA', 'Working on It');
