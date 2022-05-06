@@ -170,7 +170,7 @@ namespace Shop.Controllers
                 QueryDB queryDB = new QueryDB(WebHostEnvironment);
                 queryDB.AddProduct(product);
 
-                return RedirectToAction("DisplayCompanyHomePage", "Home", new { companyID = product.ReferenceID });
+                return RedirectToAction("DisplayCompanyInfo", "Admin", new { companyID = product.ReferenceID });
             }
 
             return RedirectToAction("Index", "Home");
