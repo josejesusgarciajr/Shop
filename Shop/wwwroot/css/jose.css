@@ -21,10 +21,11 @@ p.match-a-blue {
 .display-main {
     color: white;
     font-family: 'Franklin Gothic Medium';
-    font-size: 85px;
-    background-image: url("~/Image/bg/blue-orange-black.jpg");
-/*    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;*/
+    font-size: 80px;
+/*    background-image: url("~/Image/bg/blue-orange-black.jpg");
+    -webkit-background-clip: content-box;
+    -webkit-text-fill-color: transparent;
+    color: transparent;*/
 }
 
 .display-second {
