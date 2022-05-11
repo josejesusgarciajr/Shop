@@ -64,7 +64,8 @@ th {
 }
 
 div.mobile-device-scroll {
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 footer {
