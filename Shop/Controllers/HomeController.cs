@@ -31,6 +31,8 @@ namespace Shop.Controllers
 
         public IActionResult Index(string search = null)
         {
+            HttpContext.Session.Clear();
+
             QueryDB queryDB = new QueryDB();
             List<Company> companies = new List<Company>();
 
@@ -47,12 +49,16 @@ namespace Shop.Controllers
 
         public IActionResult AddNoteView(int companyID)
         {
+            HttpContext.Session.Clear();
+
             ViewData["companyID"] = companyID;
             return View();
         }
 
         public IActionResult AddNotetoCompany(Note note)
         {
+            HttpContext.Session.Clear();
+
             note.Date = DateTime.Now.ToString("f", CultureInfo.GetCultureInfo("en-US"));
 
             QueryDB queryDB = new QueryDB();
@@ -63,6 +69,8 @@ namespace Shop.Controllers
 
         public IActionResult UpdateNoteView(int noteID)
         {
+            HttpContext.Session.Clear();
+
             QueryDB queryDB = new QueryDB();
             Note note = queryDB.GetNote(noteID);
 
@@ -71,6 +79,8 @@ namespace Shop.Controllers
 
         public IActionResult UpdateNoteDB(Note note)
         {
+            HttpContext.Session.Clear();
+
             QueryDB queryDB = new QueryDB();
             queryDB.UpdateNote(note);
 
@@ -79,6 +89,8 @@ namespace Shop.Controllers
 
         public IActionResult DeleteNote(int noteID, int companyID)
         {
+            HttpContext.Session.Clear();
+
             QueryDB queryDB = new QueryDB();
             queryDB.DeleteNote(noteID);
 
@@ -87,6 +99,8 @@ namespace Shop.Controllers
 
         public IActionResult DisplayCompanyHomePage(int companyID, string search = null)
         {
+            HttpContext.Session.Clear();
+
             // check if mobile device
             Mobile mobile = new Mobile(HttpContext);
             ViewData["IsMobileDevice"] = mobile.IsMobileDeviceBrowser();
@@ -109,6 +123,8 @@ namespace Shop.Controllers
 
         public IActionResult DisplayProductView(int productID)
         {
+            HttpContext.Session.Clear();
+
             // get product
             QueryDB queryDB = new QueryDB();
             Product product = queryDB.GetProduct(productID);
