@@ -11,7 +11,7 @@
 <form asp-controller="Home" asp-action="DisplayCompanyHomePage"
       asp-route-companyID="@Model.ID">
     <input type="text" class="form-control"
-           placeholder="Search..." name="search" />
+           placeholder="Search for products!" name="search" />
     <br />
 </form>
 
@@ -96,7 +96,8 @@ else
             </div>
             <div class="card-body">
                 <h5 class="card-title">@note.Description</h5>
-                <p class="card-text">@note.Status</p>
+                <p class="card-text regular-black">@note.Status</p>
+
                 <a asp-controller="Home" asp-action="UpdateNoteView"
                    asp-route-noteID="@note.ID"
                    class="btn btn-primary">Update</a>
@@ -114,8 +115,8 @@ else
 <!-- Mission Statement-->
 <div class="container">
 
-    <label>Mission Statement:</label>
-    <p class="lead">@Model.MissionStatment</p>
+    <label class="mission-statement-label">Mission Statement:</label>
+    <p class="lead mission-statement">@Model.MissionStatment</p>
 
     <a href="@Model.HrefAddress" target="_blank">
         <address>@Model.Address</address>

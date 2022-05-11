@@ -34,6 +34,31 @@ p {
     color:ghostwhite;
 }
 
+p.regular-black {
+    color: black;
+}
+
+label.mission-statement-label {
+    color: white;
+    font-size: larger;
+    font-family: 'Times New Roman';
+    padding-bottom: 10px;
+}
+
+table {
+    background-color: white;
+}
+
+th {
+    color: black;
+    font-family: 'Times New Roman';
+    font-size: 20px;
+}
+
+.mission-statement {
+    font-family: fantasy;
+}
+
 footer {
     background-color: white;
 }
