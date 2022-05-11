@@ -63,7 +63,7 @@ th {
     font-family: fantasy;
 }
 
-div {
+div.mobile-device-scroll {
     overflow: scroll;
 }
 
