@@ -1,0 +1,39 @@
+﻿body {
+    background-color: black;
+}
+
+a {
+    color: aqua;
+}
+
+a:hover {
+    color: whitesmoke;
+}
+
+a.regular-a {
+    color: #0366d6;
+}
+
+p.match-a-blue {
+    color: #0366d6;
+}
+
+.display-main {
+    color: white;
+    font-family: 'Franklin Gothic Medium';
+    font-size: 100px;
+}
+
+.display-second {
+    color: azure;
+    font-family: cursive;
+    font-size: 70px;
+}
+
+p {
+    color:ghostwhite;
+}
+
+footer {
+    background-color: white;
+}

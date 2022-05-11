@@ -4,7 +4,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">@Model.Name</h1>
+    <h1 class="display-main">@Model.Name</h1>
 </div>
 
 <!-- search products -->
@@ -83,7 +83,7 @@ else
 <!-- Company Notes -->
 <div class="container">
 
-    <h1 class="display-4">@Model.Name To Do List</h1>
+    <h2 class="display-second">@Model.Name To Do List</h2>
 
     <a asp-controller="Home" asp-action="AddNoteView" asp-route-companyID="@Model.ID"
        class="btn btn-success">Add Note</a> <br /> <br />
