@@ -22,10 +22,6 @@ p.match-a-blue {
     color: white;
     font-family: 'Franklin Gothic Medium';
     font-size: 80px;
-/*    background-image: url("~/Image/bg/blue-orange-black.jpg");
-    -webkit-background-clip: content-box;
-    -webkit-text-fill-color: transparent;
-    color: transparent;*/
 }
 
 .display-second {
@@ -47,6 +43,15 @@ label.mission-statement-label {
     font-size: larger;
     font-family: 'Times New Roman';
     padding-bottom: 10px;
+}
+
+ul li {
+    color: skyblue;
+}
+
+img.about {
+    width: 300px;
+    height: 60px;
 }
 
 table {

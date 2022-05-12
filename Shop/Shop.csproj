@@ -10,6 +10,7 @@
     <Folder Include="wwwroot\Images\Vanessa\ProductThumbnails\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="wwwroot\Images\bg\" />
+    <Folder Include="wwwroot\Images\about\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />

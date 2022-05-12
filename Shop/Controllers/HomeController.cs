@@ -47,6 +47,11 @@ namespace Shop.Controllers
             return View(companies);
         }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
         public IActionResult AddNoteView(int companyID)
         {
             HttpContext.Session.Clear();
