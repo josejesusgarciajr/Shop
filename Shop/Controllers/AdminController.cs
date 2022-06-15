@@ -12,7 +12,8 @@ namespace Shop.Controllers
     {
         private readonly IWebHostEnvironment WebHostEnvironment;
         private static int CompanyID = -1;
-        private static Authentication Authentication = new Authentication();
+        public static Authentication Authentication = new Authentication();
+
         public AdminController(IWebHostEnvironment e)
         {
             WebHostEnvironment = e;
@@ -62,6 +63,8 @@ namespace Shop.Controllers
             if(Authentication.Key == key)
             {
                 HttpContext.Session.SetInt32("key", key);
+                Authentication.LogIn();
+
                 return RedirectToAction("Index", "Admin");
             }
 

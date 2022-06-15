@@ -13,6 +13,7 @@ namespace Shop.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        
 
         /*
          * Vaness's Company
@@ -32,6 +33,7 @@ namespace Shop.Controllers
         public IActionResult Index(string search = null)
         {
             HttpContext.Session.Clear();
+            AdminController.Authentication.LogOut();
 
             QueryDB queryDB = new QueryDB();
             List<Company> companies = new List<Company>();
@@ -49,12 +51,16 @@ namespace Shop.Controllers
 
         public IActionResult About()
         {
+            HttpContext.Session.Clear();
+            AdminController.Authentication.LogOut();
+
             return View();
         }
 
         public IActionResult AddNoteView(int companyID)
         {
             HttpContext.Session.Clear();
+            AdminController.Authentication.LogOut();
 
             ViewData["companyID"] = companyID;
             return View();
@@ -63,6 +69,7 @@ namespace Shop.Controllers
         public IActionResult AddNotetoCompany(Note note)
         {
             HttpContext.Session.Clear();
+            AdminController.Authentication.LogOut();
 
             note.Date = DateTime.Now.ToString("f", CultureInfo.GetCultureInfo("en-US"));
 
@@ -75,6 +82,7 @@ namespace Shop.Controllers
         public IActionResult UpdateNoteView(int noteID)
         {
             HttpContext.Session.Clear();
+            AdminController.Authentication.LogOut();
 
             QueryDB queryDB = new QueryDB();
             Note note = queryDB.GetNote(noteID);
@@ -85,6 +93,7 @@ namespace Shop.Controllers
         public IActionResult UpdateNoteDB(Note note)
         {
             HttpContext.Session.Clear();
+            AdminController.Authentication.LogOut();
 
             QueryDB queryDB = new QueryDB();
             queryDB.UpdateNote(note);
@@ -95,6 +104,7 @@ namespace Shop.Controllers
         public IActionResult DeleteNote(int noteID, int companyID)
         {
             HttpContext.Session.Clear();
+            AdminController.Authentication.LogOut();
 
             QueryDB queryDB = new QueryDB();
             queryDB.DeleteNote(noteID);
@@ -105,6 +115,7 @@ namespace Shop.Controllers
         public IActionResult DisplayCompanyHomePage(int companyID, string search = null)
         {
             HttpContext.Session.Clear();
+            AdminController.Authentication.LogOut();
 
             // check if mobile device
             Mobile mobile = new Mobile(HttpContext);
@@ -129,6 +140,7 @@ namespace Shop.Controllers
         public IActionResult DisplayProductView(int productID)
         {
             HttpContext.Session.Clear();
+            AdminController.Authentication.LogOut();
 
             // get product
             QueryDB queryDB = new QueryDB();
@@ -145,6 +157,8 @@ namespace Shop.Controllers
         public IActionResult Privacy()
         {
             HttpContext.Session.Clear();
+            AdminController.Authentication.LogOut();
+
             return View();
         }
 
