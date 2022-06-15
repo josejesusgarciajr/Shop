@@ -26,7 +26,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         @{
-                            
+
                         }
 
                         @if (!Shop.Controllers.AdminController.Authentication.IsLoggedIn())
@@ -35,6 +35,21 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="EnterGeneratedKey">Management</a>
                             </li>
                         }
+
+                        @if (Shop.Controllers.AdminController.Authentication.IsLoggedIn())
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Dashboard</a>
+                            </li>
+                        }
+
+                        @if (Shop.Controllers.AdminController.Authentication.IsLoggedIn())
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AddCompanyView">Add Company</a>
+                            </li>
+                        }
+
                         <li class="class=" nav-item"">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
                         </li>
